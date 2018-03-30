@@ -1,0 +1,16 @@
+<resources>
+    <string name="app_name">Lynk</string>
+    <string name="title_fragment_voice_search">Voice Search</string>
+    <string name="title_fragment_google_map_search">Google Map Search</string>
+    <string name="title_fragment_settings">Settings</string>
+    <string name="speech_prompt">Say something&#8230;</string>
+    <string name="speech_not_supported">Sorry! Your device doesn\'t support speech input</string>
+
+    <string name="nav_item_voice_search">Voice Search</string>
+    <string name="nav_item_map_search">Map Search</string>
+    <string name="nav_item_settings">Settings</string>
+
+    <string name="notification_settings_screen_title">Notification</string>
+    <string name="about_screen_title">About</string>
+
+</resources>
