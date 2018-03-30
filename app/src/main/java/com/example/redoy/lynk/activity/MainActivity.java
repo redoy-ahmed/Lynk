@@ -29,17 +29,17 @@ public class MainActivity extends AppCompatActivity {
             Fragment mFragment = null;
 
             switch (item.getItemId()) {
-                case R.id.navigation_home: {
+                case R.id.navigation_voice_search: {
                     mFragment = new VoiceSearchFragment();
                     getSupportActionBar().setTitle(R.string.title_fragment_voice_search);
                     break;
                 }
-                case R.id.navigation_dashboard: {
+                case R.id.navigation_map_search: {
                     mFragment = new GoogleMapSearchFragment();
                     getSupportActionBar().setTitle(R.string.title_fragment_google_map_search);
                     break;
                 }
-                case R.id.navigation_notifications: {
+                case R.id.navigation_settings: {
                     mFragment = new FragmentSettings();
                     getSupportActionBar().setTitle(R.string.title_fragment_settings);
                     break;
