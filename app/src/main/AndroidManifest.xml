@@ -30,6 +30,8 @@
         <activity
             android:name=".activity.MainActivity"
             android:label="@string/title_fragment_voice_search" />
+        <activity android:name=".activity.NotificationSettings" />
+        <activity android:name=".activity.SignInSignUpActivity"></activity>
     </application>
 
 </manifest>

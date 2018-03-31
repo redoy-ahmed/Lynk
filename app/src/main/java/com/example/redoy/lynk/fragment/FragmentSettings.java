@@ -12,6 +12,8 @@ import android.view.ViewGroup.LayoutParams;
 import android.widget.LinearLayout;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.activity.NotificationSettings;
+import com.example.redoy.lynk.activity.SignInSignUpActivity;
 import com.example.redoy.lynk.widget.OptionListItem;
 
 import butterknife.BindView;
@@ -35,9 +37,20 @@ public class FragmentSettings extends Fragment {
         ClassForNotificationSettingsActivity(FragmentSettings fragmentSettings) {
             this.fragmentSettings = fragmentSettings;
         }
+        public void onClick(View view) {
+            fragmentSettings.startActivity(new Intent(fragmentSettings.getActivity(), NotificationSettings.class));
+        }
+    }
+
+    class ClassForLogInSignUp implements View.OnClickListener {
+        final FragmentSettings fragmentSettings;
+
+        ClassForLogInSignUp(FragmentSettings fragmentSettings) {
+            this.fragmentSettings = fragmentSettings;
+        }
 
         public void onClick(View view) {
-            //fragmentSettings.startActivity(new Intent(moreOptionsFragment.getActivity(), DashboardActivity.class));
+            fragmentSettings.startActivity(new Intent(fragmentSettings.getActivity(), SignInSignUpActivity.class));
         }
     }
 
@@ -70,9 +83,11 @@ public class FragmentSettings extends Fragment {
 
     private void initializeData() {
         OptionListItem optionListItem1 = new OptionListItem(context, context.getString(R.string.notification_settings_screen_title), new ClassForNotificationSettingsActivity(this));
-        OptionListItem optionListItem2 = new OptionListItem(context, context.getString(R.string.about_screen_title), new ClassForAboutActivity(this));
+        OptionListItem optionListItem2 = new OptionListItem(context, context.getString(R.string.login_logout_screen_title), new ClassForLogInSignUp(this));
+        OptionListItem optionListItem3 = new OptionListItem(context, context.getString(R.string.about_screen_title), new ClassForAboutActivity(this));
 
         linearLayout.addView(optionListItem1.view, new LayoutParams(LayoutParams.MATCH_PARENT, 150));
         linearLayout.addView(optionListItem2.view, new LayoutParams(LayoutParams.MATCH_PARENT, 150));
+        linearLayout.addView(optionListItem3.view, new LayoutParams(LayoutParams.MATCH_PARENT, 150));
     }
 }

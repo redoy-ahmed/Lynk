@@ -9,4 +9,32 @@
     <dimen name="huge">32dp</dimen>
     <dimen name="corner_radius">4dp</dimen>
     <dimen name="navigation_bar_height">60dp</dimen>
+
+    <dimen name="_8sdp">8dp</dimen>
+    <dimen name="_12sdp">12dp</dimen>
+    <dimen name="_9sdp">9dp</dimen>
+    <dimen name="_4sdp">4dp</dimen>
+
+    <dimen name="_18sdp">18dp</dimen>
+    <dimen name="_1sdp">1dp</dimen>
+    <dimen name="_6sdp">6dp</dimen>
+    <dimen name="_2sdp">2dp</dimen>
+    <dimen name="_11sdp">11dp</dimen>
+    <dimen name="_14sdp">14dp</dimen>
+
+    <dimen name="_10sdp">10dp</dimen>
+    <dimen name="_22sdp">22dp</dimen>
+    <dimen name="_28sdp">28dp</dimen>
+    <dimen name="_24sdp">24dp</dimen>
+    <dimen name="_16sdp">16dp</dimen>
+    <dimen name="_13sdp">13dp</dimen>
+
+
+    <dimen name="_32sdp">32dp</dimen>
+
+    <dimen name="msg_text_secondary">16sp</dimen>
+    <dimen name="icon_star">25dp</dimen>
+    <dimen name="icon_text">22dp</dimen>
+    <dimen name="timestamp">12dp</dimen>
+
 </resources>
