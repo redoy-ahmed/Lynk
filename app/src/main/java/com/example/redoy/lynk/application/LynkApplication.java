@@ -1,7 +1,9 @@
 package com.example.redoy.lynk.application;
 
+import android.app.Application;
 import android.content.Context;
 
+import com.example.redoy.lynk.service.ConnectivityReceiver;
 import com.example.redoy.lynk.service.CustomSharedPreference;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -10,10 +12,25 @@ import com.google.gson.GsonBuilder;
  * Created by Redoy on 3/31/2018.
  */
 
-public class LynkApplication {
+public class LynkApplication extends Application {
+
     private static GsonBuilder builder;
     private static Gson gson;
     private static CustomSharedPreference shared;
+    private static LynkApplication mInstance;
+    private static Context mContext;
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+        mInstance = this;
+        mContext = getApplicationContext();
+        //MultiDex.install(this);
+    }
+
+    public static synchronized LynkApplication getInstance() {
+        return mInstance;
+    }
 
     public static CustomSharedPreference getShared(Context context) {
         if (shared == null) {
@@ -28,5 +45,9 @@ public class LynkApplication {
             gson = builder.create();
         }
         return gson;
+    }
+
+    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
+        ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 }

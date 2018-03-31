@@ -46,4 +46,7 @@ dependencies {
     //recycler view and card view
     implementation 'com.android.support:cardview-v7:26.1.0'
     implementation 'com.android.support:recyclerview-v7:26.1.0'
+
+    //sweet alert dialog
+    implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
 }

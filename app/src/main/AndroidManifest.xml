@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
     package="com.example.redoy.lynk">
 
     <uses-permission android:name="com.androidtutorialpoint.mymapsappsdirection.permission.MAPS_RECEIVE" />
@@ -10,9 +11,11 @@
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 
     <application
+        android:name=".application.LynkApplication"
         android:allowBackup="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        tools:replace="android:icon"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
         android:theme="@style/AppTheme">
@@ -20,7 +23,9 @@
             android:name="com.google.android.geo.API_KEY"
             android:value="@string/google_maps_key" />
 
-        <activity android:name=".activity.SplashScreenActivity">
+        <activity
+            android:name=".activity.SplashScreenActivity"
+            android:screenOrientation="portrait">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
 
@@ -29,9 +34,22 @@
         </activity>
         <activity
             android:name=".activity.MainActivity"
-            android:label="@string/title_fragment_voice_search" />
-        <activity android:name=".activity.NotificationSettings" />
-        <activity android:name=".activity.SignInSignUpActivity"></activity>
+            android:label="@string/title_fragment_voice_search"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.NotificationSettings"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.IntroductionActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.LogInActivity"
+            android:label="@string/log_in_screen_title"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.SignUpActivity"
+            android:label="@string/Sign_up_screen_title"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

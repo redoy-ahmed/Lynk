@@ -25,7 +25,14 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        initializeWidgets();
+    }
+
+    private void initializeWidgets() {
         ButterKnife.bind(this);
+
+        getSupportActionBar().setTitle(R.string.title_fragment_voice_search);
+        getSupportFragmentManager().beginTransaction().replace(R.id.frame_layout, new VoiceSearchFragment()).commit();
 
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override

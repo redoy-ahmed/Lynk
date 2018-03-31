@@ -15,12 +15,12 @@ public class OptionListItem {
     public View view;
 
     @SuppressLint({"InflateParams"})
-    public OptionListItem(Context context, String str, OnClickListener onClickListener) {
-        this.view = LayoutInflater.from(context).inflate(R.layout.widget_option_item, null);
+    public OptionListItem(Context context, String str, int image, OnClickListener onClickListener) {
+        view = LayoutInflater.from(context).inflate(R.layout.widget_option_item, null);
         TextView textView = this.view.findViewById(R.id.option_item_widget_title);
         ImageView imageView = this.view.findViewById(R.id.option_item_widget_image_view_logo);
         textView.setText(str);
-        imageView.setImageResource(R.drawable.ic_notifications_black_24dp);
-        this.view.setOnClickListener(onClickListener);
+        imageView.setImageResource(image);
+        view.setOnClickListener(onClickListener);
     }
 }
