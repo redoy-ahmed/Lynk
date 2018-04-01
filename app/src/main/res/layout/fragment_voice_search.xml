@@ -17,7 +17,7 @@
         android:src="@drawable/ic_microphone" />
 
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/recycler_view_home"
+        android:id="@+id/recycler_view_voice_search"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:scrollbars="vertical"
@@ -25,7 +25,7 @@
         app:layout_behavior="@string/appbar_scrolling_view_behavior" />
 
     <TextView
-        android:id="@+id/textView"
+        android:id="@+id/hint_textView"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/microphone_logo_imageView"
@@ -34,4 +34,17 @@
         android:textColor="@color/colorAccent"
         android:textSize="@dimen/_24sdp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/empty_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/microphone_logo_imageView"
+        android:layout_centerHorizontal="true"
+        android:text="No Match Found"
+        android:textColor="@color/colorAccent"
+        android:textSize="@dimen/_24sdp"
+        android:textStyle="bold"
+        android:visibility="gone"/>
+
 </RelativeLayout>
