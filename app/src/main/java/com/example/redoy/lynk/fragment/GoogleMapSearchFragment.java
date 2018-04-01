@@ -55,11 +55,7 @@ public class GoogleMapSearchFragment extends Fragment implements
         OnMapReadyCallback,
         GoogleApiClient.ConnectionCallbacks,
         GoogleApiClient.OnConnectionFailedListener,
-        LocationListener,
-        GoogleMap.OnCameraMoveStartedListener,
-        GoogleMap.OnCameraMoveListener,
-        GoogleMap.OnCameraMoveCanceledListener,
-        GoogleMap.OnCameraIdleListener {
+        LocationListener {
 
     private GoogleMap mMap;
     private MapView mapView;
@@ -117,15 +113,11 @@ public class GoogleMapSearchFragment extends Fragment implements
     }
 
     @Override
-    public void onMapReady(GoogleMap googleMap) {
-        mMap = googleMap;
+    public void onMapReady(GoogleMap mGoogleMap) {
+        mMap = mGoogleMap;
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
+        mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        mMap.setOnCameraIdleListener(this);
-        mMap.setOnCameraMoveStartedListener(this);
-        mMap.setOnCameraMoveListener(this);
-        mMap.setOnCameraMoveCanceledListener(this);
 
         //Initialize Google Play Services
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
@@ -140,7 +132,7 @@ public class GoogleMapSearchFragment extends Fragment implements
 
         searchResult = new ArrayList<>();
 
-        Button btnRestaurant = rootView.findViewById(R.id.btnRestaurant);
+        /*Button btnRestaurant = rootView.findViewById(R.id.btnRestaurant);
         btnRestaurant.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -162,7 +154,7 @@ public class GoogleMapSearchFragment extends Fragment implements
             public void onClick(View v) {
                 build_retrofit_and_get_response("school");
             }
-        });
+        });*/
 
         /*Button btnVoiceSearch = findViewById(R.id.btnVoiceSearch);
         btnVoiceSearch.setOnClickListener(new View.OnClickListener() {
@@ -284,7 +276,7 @@ public class GoogleMapSearchFragment extends Fragment implements
         mCurrLocationMarker = mMap.addMarker(markerOptions);
 
         //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng,18));
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
         //mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
 
         Log.d("onLocationChanged", String.format("latitude:%.3f longitude:%.3f", latitude, longitude));
@@ -389,40 +381,5 @@ public class GoogleMapSearchFragment extends Fragment implements
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
-    }
-
-    @Override
-    public void onCameraMoveStarted(int reason) {
-
-        if (reason == GoogleMap.OnCameraMoveStartedListener.REASON_GESTURE) {
-            Toast.makeText(rootView.getContext(), "The user gestured on the map.",
-                    Toast.LENGTH_SHORT).show();
-        } else if (reason == GoogleMap.OnCameraMoveStartedListener
-                .REASON_API_ANIMATION) {
-            Toast.makeText(rootView.getContext(), "The user tapped something on the map.",
-                    Toast.LENGTH_SHORT).show();
-        } else if (reason == GoogleMap.OnCameraMoveStartedListener
-                .REASON_DEVELOPER_ANIMATION) {
-            Toast.makeText(rootView.getContext(), "The app moved the camera.",
-                    Toast.LENGTH_SHORT).show();
-        }
-    }
-
-    @Override
-    public void onCameraMove() {
-        Toast.makeText(rootView.getContext(), "The camera is moving.",
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCameraMoveCanceled() {
-        Toast.makeText(rootView.getContext(), "Camera movement canceled.",
-                Toast.LENGTH_SHORT).show();
-    }
-
-    @Override
-    public void onCameraIdle() {
-        Toast.makeText(rootView.getContext(), "The camera has stopped moving.",
-                Toast.LENGTH_SHORT).show();
     }
 }
