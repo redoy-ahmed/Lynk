@@ -2,7 +2,10 @@ package com.example.redoy.lynk.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.location.Address;
+import android.location.Geocoder;
 import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
@@ -24,21 +27,26 @@ import com.example.redoy.lynk.application.RetrofitLynk;
 import com.example.redoy.lynk.model.Example;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
+import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
+import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.LocationListener;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.ui.PlacePicker;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.MapView;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.model.BitmapDescriptorFactory;
-import com.google.android.gms.maps.model.CameraPosition;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
 
+import java.io.IOException;
 import java.util.ArrayList;
+import java.util.List;
 
 import butterknife.ButterKnife;
 import retrofit.Call;
@@ -46,6 +54,8 @@ import retrofit.Callback;
 import retrofit.GsonConverterFactory;
 import retrofit.Response;
 import retrofit.Retrofit;
+
+import static android.app.Activity.RESULT_OK;
 
 /**
  * Created by Redoy on 3/30/2018.
@@ -68,6 +78,8 @@ public class GoogleMapSearchFragment extends Fragment implements
     LocationRequest mLocationRequest;
     ArrayList<String> searchResult;
     LatLng latLng;
+    private static final int PLACE_PICKER_REQUEST = 3;
+    boolean isFirstTime = true;
 
     View rootView;
 
@@ -130,33 +142,20 @@ public class GoogleMapSearchFragment extends Fragment implements
             mMap.setMyLocationEnabled(true);
         }
 
+        Button btnMyLocation = rootView.findViewById(R.id.btnMyLocation);
+        btnMyLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+            }
+        });
+
+        /*
         searchResult = new ArrayList<>();
 
-        /*Button btnRestaurant = rootView.findViewById(R.id.btnRestaurant);
-        btnRestaurant.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                build_retrofit_and_get_response("restaurant");
-            }
-        });
-
-        Button btnHospital = rootView.findViewById(R.id.btnHospital);
-        btnHospital.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                build_retrofit_and_get_response("hospital");
-            }
-        });
-
-        Button btnSchool = rootView.findViewById(R.id.btnSchool);
-        btnSchool.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                build_retrofit_and_get_response("school");
-            }
-        });*/
-
-        /*Button btnVoiceSearch = findViewById(R.id.btnVoiceSearch);
+        Button btnVoiceSearch = findViewById(R.id.btnVoiceSearch);
         btnVoiceSearch.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -255,33 +254,25 @@ public class GoogleMapSearchFragment extends Fragment implements
     @Override
     public void onLocationChanged(Location location) {
 
-        Log.d("onLocationChanged", "entered");
-
         mLastLocation = location;
         if (mCurrLocationMarker != null) {
             mCurrLocationMarker.remove();
         }
-        //Place current location marker
-        latitude = location.getLatitude();
-        longitude = location.getLongitude();
-        latLng = new LatLng(location.getLatitude(), location.getLongitude());
-        MarkerOptions markerOptions = new MarkerOptions();
-        markerOptions.position(latLng);
-        markerOptions.title("Current Position");
+        if (isFirstTime) {
+            latitude = location.getLatitude();
+            longitude = location.getLongitude();
+            latLng = new LatLng(location.getLatitude(), location.getLongitude());
 
-        // Adding colour to the marker
-        markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            MarkerOptions markerOptions = new MarkerOptions();
+            markerOptions.position(latLng);
+            markerOptions.title("Current Position");
 
-        // Adding Marker to the Map
-        mCurrLocationMarker = mMap.addMarker(markerOptions);
-
-        //move map camera
-        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-        //mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-
-        Log.d("onLocationChanged", String.format("latitude:%.3f longitude:%.3f", latitude, longitude));
-
-        Log.d("onLocationChanged", "Exit");
+            markerOptions.icon(BitmapDescriptorFactory.defaultMarker(BitmapDescriptorFactory.HUE_MAGENTA));
+            mCurrLocationMarker = mMap.addMarker(markerOptions);
+            mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+            mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+            isFirstTime = false;
+        }
     }
 
     @Override
@@ -343,23 +334,6 @@ public class GoogleMapSearchFragment extends Fragment implements
     }
 
     @Override
-    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
-        inflater.inflate(R.menu.google_map_search_menu, menu);
-        super.onCreateOptionsMenu(menu, inflater);
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        switch (item.getItemId()) {
-            case R.id.google_map_search_menu:
-                Toast.makeText(getActivity(), "Search Icon Click", Toast.LENGTH_SHORT).show();
-                return true;
-            default:
-                return super.onOptionsItemSelected(item);
-        }
-    }
-
-    @Override
     public void onResume() {
         super.onResume();
         mapView.onResume();
@@ -381,5 +355,72 @@ public class GoogleMapSearchFragment extends Fragment implements
     public void onLowMemory() {
         super.onLowMemory();
         mapView.onLowMemory();
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.google_map_search_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.google_map_search_menu:
+                loadPlacePicker();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private void loadPlacePicker() {
+        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+        try {
+            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+        } catch (GooglePlayServicesRepairableException | GooglePlayServicesNotAvailableException e) {
+            e.printStackTrace();
+        }
+    }
+
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == RESULT_OK) {
+                Place place = PlacePicker.getPlace(rootView.getContext(), data);
+                String addressText = place.getName().toString();
+                addressText += "\n" + place.getAddress().toString();
+                Toast.makeText(rootView.getContext(), addressText, Toast.LENGTH_LONG).show();
+                placeMarkerOnMap(place.getLatLng());
+            }
+        }
+    }
+
+    protected void placeMarkerOnMap(LatLng location) {
+        MarkerOptions markerOptions = new MarkerOptions().position(location);
+        String titleStr = getAddress(location);
+        markerOptions.title(titleStr);
+        mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(location, 18));
+        mMap.addMarker(markerOptions);
+    }
+
+    private String getAddress(LatLng latLng) {
+        Geocoder geocoder = new Geocoder(rootView.getContext());
+        String addressText = "";
+        List<Address> addresses;
+        Address address;
+        try {
+            addresses = geocoder.getFromLocation(latLng.latitude, latLng.longitude, 1);
+            if (null != addresses && !addresses.isEmpty()) {
+                address = addresses.get(0);
+                for (int i = 0; i < address.getMaxAddressLineIndex(); i++) {
+                    addressText += (i == 0) ? address.getAddressLine(i) : ("\n" + address.getAddressLine(i));
+                }
+            }
+        } catch (IOException e) {
+        }
+        return addressText;
     }
 }

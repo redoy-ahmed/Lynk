@@ -36,6 +36,7 @@ dependencies {
     //google maps
     implementation 'com.google.android.gms:play-services-maps:12.0.0'
     implementation 'com.google.android.gms:play-services-location:12.0.0'
+    implementation 'com.google.android.gms:play-services-places:12.0.0'
 
     //retrofit
     implementation 'com.squareup.retrofit:retrofit:2.0.0-beta2'
@@ -49,4 +50,7 @@ dependencies {
 
     //sweet alert dialog
     implementation 'com.github.thomper:sweet-alert-dialog:v1.4.0'
+
+    //UI validation
+    implementation 'com.mobsandgeeks:android-saripaar:2.0.3'
 }

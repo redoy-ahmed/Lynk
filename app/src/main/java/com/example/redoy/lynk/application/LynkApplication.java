@@ -2,8 +2,6 @@ package com.example.redoy.lynk.application;
 
 import android.app.Application;
 import android.content.Context;
-
-import com.example.redoy.lynk.service.ConnectivityReceiver;
 import com.example.redoy.lynk.service.CustomSharedPreference;
 import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
@@ -45,9 +43,5 @@ public class LynkApplication extends Application {
             gson = builder.create();
         }
         return gson;
-    }
-
-    public void setConnectivityListener(ConnectivityReceiver.ConnectivityReceiverListener listener) {
-        ConnectivityReceiver.connectivityReceiverListener = listener;
     }
 }

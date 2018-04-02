@@ -26,4 +26,7 @@ public class Constants {
     public static final String SUBCATEGORY = "subcategory";
     public static final String USER_DATA = "USER_DATA";
     public static final String FIRST_TIME_OPENING = "FIRST_TIME_OPENING";
+
+    public static final String IS_LOGGED_REMEMBER = "IsLoggedRemember";
+    public static final String IS_LOGGED_IN = "IsLoggedIn";
 }

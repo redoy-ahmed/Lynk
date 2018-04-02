@@ -16,26 +16,34 @@
         <requestFocus />
 
         <EditText
-            android:id="@+id/sign_up_login_edit_text_widget_email"
+            android:id="@+id/login_edit_text_widget_email"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large"
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/sign_up_login_hint_email_or_mobile"
-            android:imeOptions="actionNone|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
             android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone|time"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <EditText
-            android:id="@+id/sign_up_login_edit_text_widget_password"
+            android:id="@+id/login_edit_text_widget_password"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large"
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/sign_up_login_hint_password"
-            android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone"
+            android:inputType="textPassword"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
+
+        <CheckBox
+            android:id="@+id/remember_log_in_checkBox"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginTop="@dimen/large"
+            android:padding="@dimen/check_box_padding_login_screen_only"
+            android:text="Remember"
+            android:textColor="@color/colorAccent" />
 
         <Button
             android:id="@+id/login_button"
@@ -48,7 +56,7 @@
             android:textColor="@color/white" />
 
         <TextView
-            android:id="@+id/sign_up_login_text_view_forgot_password_button"
+            android:id="@+id/login_text_view_forgot_password_button"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center"
