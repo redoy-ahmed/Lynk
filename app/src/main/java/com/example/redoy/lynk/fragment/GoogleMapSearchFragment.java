@@ -74,6 +74,7 @@ public class GoogleMapSearchFragment extends Fragment implements
     boolean isFirstTime = true;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     FusedLocationProviderClient mFusedLocationClient;
+    protected static long MIN_UPDATE_INTERVAL = 30 * 1000;
 
     View rootView;
 
@@ -177,8 +178,7 @@ public class GoogleMapSearchFragment extends Fragment implements
     @Override
     public void onConnected(Bundle bundle) {
         mLocationRequest = new LocationRequest();
-        mLocationRequest.setInterval(1000);
-        mLocationRequest.setFastestInterval(1000);
+        mLocationRequest.setInterval(MIN_UPDATE_INTERVAL);
         mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
 
         if (ContextCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
