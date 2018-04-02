@@ -14,40 +14,33 @@
         card_view:cardMaxElevation="10dp"
         card_view:contentPadding="10dp">
 
-
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_gravity="center"
-            android:background="#09A9FF"
+            android:background="@color/colorAccent"
+            android:gravity="center"
             android:orientation="vertical">
 
             <ImageView
                 android:id="@+id/list_item_imageView"
                 android:layout_width="90dp"
                 android:layout_height="90dp"
-                android:layout_alignParentTop="true"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="28dp"
+                android:layout_centerInParent="true"
                 android:padding="5dp"
                 android:src="@drawable/a" />
 
-
             <TextView
                 android:id="@+id/list_item_textView"
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/list_item_imageView"
                 android:gravity="center"
-                android:text="BFClkhdfdlkfhdslfjdlkjfdskfjdslkfjdslkfjdlfkjdfjkdfdgdfdgdgdgdggdfgdfgdfgdfgdgdgdg"
-                android:textSize="16dp"
                 android:paddingBottom="5dp"
-                android:textColor="@android:color/white" />
-
+                android:text="bla bla"
+                android:textColor="@android:color/white"
+                android:textSize="16dp" />
 
         </RelativeLayout>
-
     </android.support.v7.widget.CardView>
-
 </LinearLayout>
