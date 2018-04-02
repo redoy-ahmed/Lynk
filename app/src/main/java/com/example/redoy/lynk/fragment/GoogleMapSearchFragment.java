@@ -2,6 +2,7 @@ package com.example.redoy.lynk.fragment;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Address;
@@ -10,6 +11,7 @@ import android.location.Location;
 import android.os.Build;
 import android.os.Bundle;
 import android.os.Looper;
+import android.support.annotation.NonNull;
 import android.support.v4.app.ActivityCompat;
 import android.support.v4.app.Fragment;
 import android.support.v4.content.ContextCompat;
@@ -24,12 +26,16 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.service.LocationAlertIntentService;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
 import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.common.api.GoogleApiClient;
 import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.Geofence;
+import com.google.android.gms.location.GeofencingClient;
+import com.google.android.gms.location.GeofencingRequest;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
@@ -44,6 +50,8 @@ import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.Marker;
 import com.google.android.gms.maps.model.MarkerOptions;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 
 import java.io.IOException;
 import java.util.List;
@@ -76,6 +84,12 @@ public class GoogleMapSearchFragment extends Fragment implements
     FusedLocationProviderClient mFusedLocationClient;
     protected static long MIN_UPDATE_INTERVAL = 30 * 1000;
 
+    //meters
+    private static final int GEOFENCE_RADIUS = 500;
+    //in milli seconds
+    private static final int GEOFENCE_EXPIRATION = 6000;
+    private GeofencingClient geofencingClient;
+
     View rootView;
 
     @Override
@@ -105,6 +119,7 @@ public class GoogleMapSearchFragment extends Fragment implements
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
+        geofencingClient = LocationServices.getGeofencingClient(getContext());
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -126,6 +141,13 @@ public class GoogleMapSearchFragment extends Fragment implements
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
+
+        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
+            @Override
+            public void onMapClick(LatLng latLng) {
+                addLocationAlert(latLng.latitude, latLng.longitude);
+            }
+        });
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -342,5 +364,47 @@ public class GoogleMapSearchFragment extends Fragment implements
         } catch (IOException e) {
         }
         return addressText;
+    }
+
+    @SuppressLint("MissingPermission")
+    private void addLocationAlert(double lat, double lng) {
+
+        String key = "" + lat + "-" + lng;
+        Geofence geofence = getGeofence(lat, lng, key);
+        geofencingClient.addGeofences(getGeofencingRequest(geofence), getGeofencePendingIntent()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    Toast.makeText(getContext(), "Location alter has been added", Toast.LENGTH_SHORT).show();
+                } else {
+                    Toast.makeText(getContext(), "Location alter could not be added", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+    }
+
+    private Geofence getGeofence(double lat, double lang, String key) {
+        return new Geofence.Builder()
+                .setRequestId(key)
+                .setCircularRegion(lat, lang, GEOFENCE_RADIUS)
+                .setExpirationDuration(Geofence.NEVER_EXPIRE)
+                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
+                        Geofence.GEOFENCE_TRANSITION_DWELL)
+                .setLoiteringDelay(10000)
+                .build();
+    }
+
+    private GeofencingRequest getGeofencingRequest(Geofence geofence) {
+        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
+
+        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
+        builder.addGeofence(geofence);
+        return builder.build();
+    }
+
+    private PendingIntent getGeofencePendingIntent() {
+        Intent intent = new Intent(getContext(), LocationAlertIntentService.class);
+        return PendingIntent.getService(getContext(), 0, intent,
+                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }
