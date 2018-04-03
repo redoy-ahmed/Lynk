@@ -16,6 +16,7 @@ import android.widget.TextView;
 
 import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.activity.BusinessInformationRegistrationActivity;
+import com.example.redoy.lynk.activity.ProfileActivity;
 import com.example.redoy.lynk.model.VoiceSearchItem;
 
 import java.util.ArrayList;
@@ -78,7 +79,7 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, BusinessInformationRegistrationActivity.class));
+                    context.startActivity(new Intent(context, ProfileActivity.class));
                 }
             });
         }

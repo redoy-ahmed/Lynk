@@ -113,13 +113,13 @@ public class DbHelper extends SQLiteOpenHelper {
         String[] code = PractiseCodes.allCodes;
         Category c;
         int changeLevel = 0;
-        int level = item_image;
+        int level = 1;
         for (int i = 0; i < category.length; i++) {
             changeLevel++;
             if (changeLevel % 5 == 0) {
-                c = new Category(item_image, category[i], code[i], level++);
+                c = new Category(1, category[i], code[i], level++);
             } else {
-                c = new Category(item_image, category[i], code[i], level);
+                c = new Category(1, category[i], code[i], level);
             }
             addCategory(c);
         }
@@ -216,133 +216,133 @@ public class DbHelper extends SQLiteOpenHelper {
 
         for (int i = 0; i < environment_questions.length; i++) {
             String[] parts = environment_answers[i].split(",");
-            QuestionItem environmentQuestions = new QuestionItem(Integer.valueOf(category_id[item_image]), category[item_image], environment_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem environmentQuestions = new QuestionItem(Integer.valueOf(category_id[1]), category[1], environment_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(environmentQuestions);
         }
 
         for (int i = 0; i < syntax_overview_questions.length; i++) {
             String[] parts = syntax_overview_answers[i].split(",");
-            QuestionItem syntaxOverviewQuestions = new QuestionItem(Integer.valueOf(category_id[2]), category[2], syntax_overview_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem syntaxOverviewQuestions = new QuestionItem(Integer.valueOf(category_id[2]), category[2], syntax_overview_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(syntaxOverviewQuestions);
         }
 
         for (int i = 0; i < data_types_questions.length; i++) {
             String[] parts = data_types_answers[i].split(",");
-            QuestionItem dataTypesQuestions = new QuestionItem(Integer.valueOf(category_id[3]), category[3], data_types_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem dataTypesQuestions = new QuestionItem(Integer.valueOf(category_id[3]), category[3], data_types_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(dataTypesQuestions);
         }
 
         for (int i = 0; i < variables_questions.length; i++) {
             String[] parts = variables_answers[i].split(",");
-            QuestionItem variablesQuestions = new QuestionItem(Integer.valueOf(category_id[4]), category[4], variables_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem variablesQuestions = new QuestionItem(Integer.valueOf(category_id[4]), category[4], variables_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(variablesQuestions);
         }
 
         for (int i = 0; i < scalars_questions.length; i++) {
             String[] parts = scalars_answers[i].split(",");
-            QuestionItem scalarsQuestions = new QuestionItem(Integer.valueOf(category_id[5]), category[5], scalars_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem scalarsQuestions = new QuestionItem(Integer.valueOf(category_id[5]), category[5], scalars_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(scalarsQuestions);
         }
 
         for (int i = 0; i < arrays_questions.length; i++) {
             String[] parts = arrays_answers[i].split(",");
-            QuestionItem arraysQuestions = new QuestionItem(Integer.valueOf(category_id[6]), category[6], arrays_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem arraysQuestions = new QuestionItem(Integer.valueOf(category_id[6]), category[6], arrays_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(arraysQuestions);
         }
 
         for (int i = 0; i < hashes_questions.length; i++) {
             String[] parts = hashes_answers[i].split(",");
-            QuestionItem arraysQuestions = new QuestionItem(Integer.valueOf(category_id[7]), category[7], hashes_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem arraysQuestions = new QuestionItem(Integer.valueOf(category_id[7]), category[7], hashes_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(arraysQuestions);
         }
 
         for (int i = 0; i < if_else_questions.length; i++) {
             String[] parts = if_else_answers[i].split(",");
-            QuestionItem ifElseQuestions = new QuestionItem(Integer.valueOf(category_id[8]), category[8], if_else_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem ifElseQuestions = new QuestionItem(Integer.valueOf(category_id[8]), category[8], if_else_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(ifElseQuestions);
         }
 
         for (int i = 0; i < loops_questions.length; i++) {
             String[] parts = loops_answers[i].split(",");
-            QuestionItem loopsQuestions = new QuestionItem(Integer.valueOf(category_id[9]), category[9], loops_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem loopsQuestions = new QuestionItem(Integer.valueOf(category_id[9]), category[9], loops_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(loopsQuestions);
         }
 
         for (int i = 0; i < operators_questions.length; i++) {
             String[] parts = operators_answers[i].split(",");
-            QuestionItem operatorsQuestions = new QuestionItem(Integer.valueOf(category_id[10]), category[10], operators_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem operatorsQuestions = new QuestionItem(Integer.valueOf(category_id[10]), category[10], operators_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(operatorsQuestions);
         }
 
         for (int i = 0; i < date_and_time_questions.length; i++) {
             String[] parts = date_and_time_answers[i].split(",");
-            QuestionItem dateAndTimeQuestions = new QuestionItem(Integer.valueOf(category_id[11]), category[11], date_and_time_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem dateAndTimeQuestions = new QuestionItem(Integer.valueOf(category_id[11]), category[11], date_and_time_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(dateAndTimeQuestions);
         }
 
         for (int i = 0; i < subroutines_questions.length; i++) {
             String[] parts = subroutines_answers[i].split(",");
-            QuestionItem subroutinesQuestions = new QuestionItem(Integer.valueOf(category_id[12]), category[12], subroutines_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem subroutinesQuestions = new QuestionItem(Integer.valueOf(category_id[12]), category[12], subroutines_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(subroutinesQuestions);
         }
 
         for (int i = 0; i < references_questions.length; i++) {
             String[] parts = references_answers[i].split(",");
-            QuestionItem referencesQuestions = new QuestionItem(Integer.valueOf(category_id[13]), category[13], references_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem referencesQuestions = new QuestionItem(Integer.valueOf(category_id[13]), category[13], references_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(referencesQuestions);
         }
 
         for (int i = 0; i < formats_questions.length; i++) {
             String[] parts = formats_answers[i].split(",");
-            QuestionItem referencesQuestions = new QuestionItem(Integer.valueOf(category_id[14]), category[14], references_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem referencesQuestions = new QuestionItem(Integer.valueOf(category_id[14]), category[14], references_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(referencesQuestions);
         }
 
         for (int i = 0; i < files_questions.length; i++) {
             String[] parts = files_answers[i].split(",");
-            QuestionItem filesQuestions = new QuestionItem(Integer.valueOf(category_id[15]), category[15], files_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem filesQuestions = new QuestionItem(Integer.valueOf(category_id[15]), category[15], files_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(filesQuestions);
         }
 
         for (int i = 0; i < directories_questions.length; i++) {
             String[] parts = directories_answers[i].split(",");
-            QuestionItem directoriesQuestions = new QuestionItem(Integer.valueOf(category_id[16]), category[16], directories_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem directoriesQuestions = new QuestionItem(Integer.valueOf(category_id[16]), category[16], directories_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(directoriesQuestions);
         }
 
         for (int i = 0; i < error_handling_questions.length; i++) {
             String[] parts = error_handling_answers[i].split(",");
-            QuestionItem errorHandlingQuestions = new QuestionItem(Integer.valueOf(category_id[17]), category[17], error_handling_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem errorHandlingQuestions = new QuestionItem(Integer.valueOf(category_id[17]), category[17], error_handling_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(errorHandlingQuestions);
         }
 
         for (int i = 0; i < special_variables_questions.length; i++) {
             String[] parts = special_variables_answers[i].split(",");
-            QuestionItem specialVariablesQuestions = new QuestionItem(Integer.valueOf(category_id[18]), category[18], special_variables_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem specialVariablesQuestions = new QuestionItem(Integer.valueOf(category_id[18]), category[18], special_variables_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(specialVariablesQuestions);
         }
 
         for (int i = 0; i < regular_expression_questions.length; i++) {
             String[] parts = regular_expression_answers[i].split(",");
-            QuestionItem regularExpressionQuestions = new QuestionItem(Integer.valueOf(category_id[20]), category[20], regular_expression_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem regularExpressionQuestions = new QuestionItem(Integer.valueOf(category_id[20]), category[20], regular_expression_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(regularExpressionQuestions);
         }
 
         for (int i = 0; i < socket_programming_questions.length; i++) {
             String[] parts = socket_programming_answers[i].split(",");
-            QuestionItem socketProgrammingQuestions = new QuestionItem(Integer.valueOf(category_id[21]), category[21], socket_programming_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem socketProgrammingQuestions = new QuestionItem(Integer.valueOf(category_id[21]), category[21], socket_programming_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(socketProgrammingQuestions);
         }
 
         for (int i = 0; i < oop_questions.length; i++) {
             String[] parts = oop_answers[i].split(",");
-            QuestionItem oopQuestions = new QuestionItem(Integer.valueOf(category_id[22]), category[22], oop_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem oopQuestions = new QuestionItem(Integer.valueOf(category_id[22]), category[22], oop_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(oopQuestions);
         }
 
         for (int i = 0; i < database_access_questions.length; i++) {
             String[] parts = database_access_answers[i].split(",");
-            QuestionItem databaseAccessQuestions = new QuestionItem(Integer.valueOf(category_id[22]), category[22], database_access_questions[i], parts[0], parts[item_image], parts[2], parts[3], Integer.valueOf(parts[4]));
+            QuestionItem databaseAccessQuestions = new QuestionItem(Integer.valueOf(category_id[22]), category[22], database_access_questions[i], parts[0], parts[1], parts[2], parts[3], Integer.valueOf(parts[4]));
             addQuestion(databaseAccessQuestions);
         }
     }
@@ -393,7 +393,7 @@ public class DbHelper extends SQLiteOpenHelper {
             do {
                 QuestionItem questionItem = new QuestionItem();
                 questionItem.setId(cursor.getInt(0));
-                questionItem.setCategoryID(cursor.getInt(item_image));
+                questionItem.setCategoryID(cursor.getInt(1));
                 questionItem.setCategory(cursor.getString(2));
                 questionItem.setQuestion(cursor.getString(3));
                 questionItem.setOption_one(cursor.getString(4));
@@ -422,7 +422,7 @@ public class DbHelper extends SQLiteOpenHelper {
             do {
                 Category categoryItems = new Category();
                 categoryItems.setId(cursor.getInt(0));
-                categoryItems.setLanguage_id(cursor.getInt(item_image));
+                categoryItems.setLanguage_id(cursor.getInt(1));
                 categoryItems.setCategory(cursor.getString(2));
                 categoryItems.setCode(cursor.getString(3));
                 categoryItems.setLevel(cursor.getInt(4));
@@ -447,7 +447,7 @@ public class DbHelper extends SQLiteOpenHelper {
             do {
                 Category categoryItems = new Category();
                 categoryItems.setId(cursor.getInt(0));
-                categoryItems.setLanguage_id(cursor.getInt(item_image));
+                categoryItems.setLanguage_id(cursor.getInt(1));
                 categoryItems.setCategory(cursor.getString(2));
                 categoryItems.setCode(cursor.getString(3));
                 categoryItems.setLevel(cursor.getInt(4));
@@ -482,7 +482,7 @@ public class DbHelper extends SQLiteOpenHelper {
             do {
                 PerformanceItem performanceItem = new PerformanceItem();
                 performanceItem.setLanguageID(cursor.getInt(0));
-                performanceItem.setCategoryID(cursor.getInt(item_image));
+                performanceItem.setCategoryID(cursor.getInt(1));
                 performanceItem.setCategory(cursor.getString(2));
                 performanceItem.setTotalQuestion(cursor.getInt(3));
                 performanceItem.setCorrectAnswer(cursor.getInt(4));
@@ -511,7 +511,7 @@ public class DbHelper extends SQLiteOpenHelper {
             do {
                 QuestionItem questionItem = new QuestionItem();
                 questionItem.setId(cursor.getInt(0));
-                questionItem.setCategoryID(cursor.getInt(item_image));
+                questionItem.setCategoryID(cursor.getInt(1));
                 questionItem.setCategory(cursor.getString(2));
                 questionItem.setQuestion(cursor.getString(3));
                 questionItem.setOption_one(cursor.getString(4));
@@ -552,7 +552,7 @@ public class DbHelper extends SQLiteOpenHelper {
             do {
                 Result result = new Result();
                 result.setId(cursor.getInt(0));
-                result.setLanguage_id(cursor.getInt(item_image));
+                result.setLanguage_id(cursor.getInt(1));
                 result.setCategory_id(cursor.getInt(2));
                 result.setTimes_played(cursor.getInt(3));
                 result.setTotal_question(cursor.getInt(4));
