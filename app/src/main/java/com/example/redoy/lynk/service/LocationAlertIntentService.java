@@ -2,15 +2,18 @@ package com.example.redoy.lynk.service;
 
 import android.app.IntentService;
 import android.app.NotificationManager;
-import android.content.Context;
+import android.app.PendingIntent;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
 import android.support.v4.app.NotificationCompat;
 import android.text.TextUtils;
+import android.text.format.DateUtils;
 import android.util.Log;
+import android.widget.RemoteViews;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.activity.MainActivity;
 import com.google.android.gms.location.Geofence;
 import com.google.android.gms.location.GeofenceStatusCodes;
 import com.google.android.gms.location.GeofencingEvent;
@@ -133,15 +136,16 @@ public class LocationAlertIntentService extends IntentService {
     }
 
     private void notifyLocationAlert(String locTransitionType, String locationDetails) {
+        RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_layout);
+        collapsedView.setTextViewText(R.id.timestamp, DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME));
 
-        String CHANNEL_ID = "Zoftino";
-        NotificationCompat.Builder builder =
-                new NotificationCompat.Builder(this, CHANNEL_ID)
-                        .setSmallIcon(R.drawable.app_logo)
-                        .setContentTitle(locTransitionType)
-                        .setContentText(locationDetails);
-        builder.setAutoCancel(true);
-        NotificationManager mNotificationManager = (NotificationManager) getSystemService(Context.NOTIFICATION_SERVICE);
-        mNotificationManager.notify(0, builder.build());
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "fdfd")
+                .setAutoCancel(true)
+                .setSmallIcon(R.drawable.ic_notifications_black_24dp)
+                .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0))
+                .setCustomContentView(collapsedView)
+                .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+        NotificationManager notificationManager = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
+        notificationManager.notify(0, builder.build());
     }
 }
