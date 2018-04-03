@@ -38,4 +38,6 @@
     <string name="reset_password_dialog_title">Reset Password</string>
     <string name="reset_password_email_address_label">E-Mail Address</string>
 
+    <string name="review_description">Put the ginger and garlic into a bowl and mix with the soy sauce, maple syrup, mirin and a drizzle of olive oil</string>
+
 </resources>

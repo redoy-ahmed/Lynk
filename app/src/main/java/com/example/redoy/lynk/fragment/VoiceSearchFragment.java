@@ -7,6 +7,9 @@ import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
@@ -14,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
-import com.example.redoy.lynk.activity.MainActivity;
+import com.example.redoy.lynk.activity.ProfileActivity;
 import com.example.redoy.lynk.adapter.AutoFitGridLayoutManager;
 import com.example.redoy.lynk.adapter.RecyclerViewAdapterVoiceSearch;
 import com.example.redoy.lynk.model.VoiceSearchItem;
@@ -65,6 +68,7 @@ public class VoiceSearchFragment extends Fragment {
     }
 
     private void initializeWidgets() {
+        setHasOptionsMenu(true);
         microPhoneImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -142,5 +146,22 @@ public class VoiceSearchFragment extends Fragment {
             allItems.add(new VoiceSearchItem(searchResult.get(i), R.drawable.a, "#09A9FF"));
         }
         return allItems;
+    }
+
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.voice_search_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        switch (item.getItemId()) {
+            case R.id.voice_search_menu_add:
+                startActivity(new Intent(rootView.getContext(), ProfileActivity.class));
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

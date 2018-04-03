@@ -50,8 +50,15 @@
             android:name=".activity.SignUpActivity"
             android:label="@string/Sign_up_screen_title"
             android:screenOrientation="portrait" />
+
         <service
             android:name=".service.LocationAlertIntentService"
             android:allowBackup="true" />
+
+        <activity
+            android:name=".activity.ProfileActivity"
+            android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
+        <activity android:name=".activity.PhotosActivity"></activity>
     </application>
+
 </manifest>

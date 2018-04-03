@@ -80,7 +80,7 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
                     /*Fragment mFragment;
                     if (getAdapterPosition() == 0) {
                         mFragment = new FragmentTutorial();
-                    } else if (getAdapterPosition() == 1) {
+                    } else if (getAdapterPosition() == item_image) {
                         mFragment = new FragmentPractise();
                     } else if (getAdapterPosition() == 2) {
                         mFragment = new FragmentCodeExamples();
