@@ -17,7 +17,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
-import com.example.redoy.lynk.activity.ProfileActivity;
+import com.example.redoy.lynk.activity.BusinessInformationRegistrationActivity;
 import com.example.redoy.lynk.adapter.AutoFitGridLayoutManager;
 import com.example.redoy.lynk.adapter.RecyclerViewAdapterVoiceSearch;
 import com.example.redoy.lynk.model.VoiceSearchItem;
@@ -158,7 +158,7 @@ public class VoiceSearchFragment extends Fragment {
     public boolean onOptionsItemSelected(MenuItem item) {
         switch (item.getItemId()) {
             case R.id.voice_search_menu_add:
-                startActivity(new Intent(rootView.getContext(), ProfileActivity.class));
+                startActivity(new Intent(rootView.getContext(), BusinessInformationRegistrationActivity.class));
                 return true;
             default:
                 return super.onOptionsItemSelected(item);

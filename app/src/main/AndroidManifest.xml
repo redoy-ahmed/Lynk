@@ -57,8 +57,15 @@
 
         <activity
             android:name=".activity.ProfileActivity"
+            android:screenOrientation="portrait"
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
-        <activity android:name=".activity.PhotosActivity"></activity>
+        <activity
+            android:name=".activity.PhotosActivity"
+            android:screenOrientation="portrait" />
+        <activity
+            android:name=".activity.BusinessInformationRegistrationActivity"
+            android:label="@string/business_registration_screen_title"
+            android:screenOrientation="portrait" />
     </application>
 
 </manifest>

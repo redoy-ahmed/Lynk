@@ -40,4 +40,21 @@
 
     <string name="review_description">Put the ginger and garlic into a bowl and mix with the soy sauce, maple syrup, mirin and a drizzle of olive oil</string>
 
+    <string name="business_registration_submit_button_title">Submit</string>
+
+    <string name="business_registration_hint_full_name">Full Name</string>
+    <string name="business_registration_hint_email">Email</string>
+    <string name="business_registration_hint_password">Password</string>
+    <string name="business_registration_hint_confirm_password">Confirm Password</string>
+    <string name="business_registration_hint_business_name">Business Name</string>
+    <string name="business_registration_hint_business_category">Business Category</string>
+    <string name="business_registration_hint_google_location">Google Location</string>
+    <string name="business_registration_hint_business_location">Business Address</string>
+    <string name="business_registration_hint_phone">Phone</string>
+    <string name="business_registration_hint_verified_phone">Verified Phone</string>
+    <string name="business_registration_hint_thana">Thana</string>
+    <string name="business_registration_hint_description">Description</string>
+
+    <string name="business_registration_screen_title">Business Registration</string>
+
 </resources>
