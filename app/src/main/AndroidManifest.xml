@@ -61,6 +61,7 @@
             android:theme="@style/Theme.AppCompat.Light.NoActionBar" />
         <activity
             android:name=".activity.PhotosActivity"
+            android:label="Photos"
             android:screenOrientation="portrait" />
         <activity
             android:name=".activity.BusinessInformationRegistrationActivity"

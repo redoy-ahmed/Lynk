@@ -32,7 +32,8 @@
                     android:layout_weight=".5"
                     android:text="Deals"
                     android:textColor="@color/colorAccent"
-                    android:textSize="16dp" />
+                    android:textSize="18dp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/deals_textView"
