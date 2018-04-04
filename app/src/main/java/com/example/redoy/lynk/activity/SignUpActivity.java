@@ -2,7 +2,9 @@ package com.example.redoy.lynk.activity;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -10,18 +12,28 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.application.ApiClient;
+import com.example.redoy.lynk.application.RetrofitLynk;
+import com.example.redoy.lynk.model.SignUp;
+import com.example.redoy.lynk.model.SignUpResponse;
 import com.example.redoy.lynk.util.ConnectionStatus;
+import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.ConfirmPassword;
 import com.mobsandgeeks.saripaar.annotation.Email;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class SignUpActivity extends AppCompatActivity implements Validator.ValidationListener {
 
@@ -40,7 +52,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     @BindView(R.id.sign_up_edit_text_widget_email)
     EditText mEditTextEmail;
 
-    @Password(scheme = Password.Scheme.ALPHA_NUMERIC_MIXED_CASE_SYMBOLS, message = "Enter a Valid Password")
+    @Password(scheme = Password.Scheme.ANY, message = "Enter a Valid Password")
     @NotEmpty
     @BindView(R.id.sign_up_edit_text_widget_password)
     EditText mEditTextPassword;
@@ -51,6 +63,7 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
 
     String strName, strMobile, strEmail, strPassword, strConfirmPassword;
     private Validator validator;
+    private static final String TAG = SignUpActivity.class.getSimpleName();
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -76,7 +89,42 @@ public class SignUpActivity extends AppCompatActivity implements Validator.Valid
     }
 
     private void getSignUp() {
-        startActivity(new Intent(this, LogInActivity.class));
+        CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(this, "Logging In...");
+        dialog.show();
+
+        RetrofitLynk apiService = ApiClient.getLynkClient().create(RetrofitLynk.class);
+
+        final SignUp signUp = new SignUp(strName, strEmail, strMobile, strPassword, strConfirmPassword);
+
+        Call<SignUpResponse> call = apiService.getSignUpOutput(signUp);
+        call.enqueue(new Callback<SignUpResponse>() {
+            @Override
+            public void onResponse(final Response<SignUpResponse> response, Retrofit retrofit) {
+                if (response.body() != null) {
+                    final SignUpResponse signUpResponse = response.body();
+                    final Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(), signUpResponse.getMessage(), Toast.LENGTH_LONG).show();
+                            startActivity(new Intent(getApplicationContext(), LogInActivity.class));
+                            handler.removeCallbacksAndMessages(true);
+                        }
+                    };
+                    handler.postDelayed(runnable, 100);
+                } else {
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Email or Mobile Already Taken", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
     @Override
