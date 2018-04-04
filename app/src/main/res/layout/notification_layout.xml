@@ -46,15 +46,13 @@
             android:id="@+id/content_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discount"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification.Title" />
+            android:text="Discount" />
 
         <TextView
             android:id="@+id/content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get 5% Discount at Nearby Bata!"
-            android:textAppearance="@style/TextAppearance.AppCompat.Notification" />
+            android:text="Get 5% Discount at Nearby Bata!" />
     </LinearLayout>
 
     <TextView
@@ -64,7 +62,6 @@
         android:layout_alignParentRight="true"
         android:layout_alignParentTop="true"
         android:paddingRight="3.5dp"
-        android:paddingTop="8dp"
-        android:textAppearance="@style/TextAppearance.AppCompat.Notification.Time" />
+        android:paddingTop="8dp" />
 
 </RelativeLayout>

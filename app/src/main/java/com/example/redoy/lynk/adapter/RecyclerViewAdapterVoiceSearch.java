@@ -41,7 +41,7 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
     public RecyclerViewHolderHome onCreateViewHolder(ViewGroup parent, int viewType) {
 
         View layoutView = LayoutInflater.from(parent.getContext()).inflate(R.layout.card_view_list_voice_search, parent, false);
-        RecyclerViewHolderHome rcv = new RecyclerViewHolderHome(layoutView, context);
+        RecyclerViewHolderHome rcv = new RecyclerViewHolderHome(layoutView, itemList, context);
         return rcv;
     }
 
@@ -71,14 +71,16 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
         @BindView(R.id.relativeLayout)
         public RelativeLayout relativeLayout;
 
-        public RecyclerViewHolderHome(final View itemView, final Context context) {
+        public RecyclerViewHolderHome(final View itemView, final ArrayList<VoiceSearchItem> itemList, final Context context) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
             itemView.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View v) {
-                    context.startActivity(new Intent(context, ProfileActivity.class));
+                    Intent intent = new Intent(context, ProfileActivity.class);
+                    intent.putExtra("id", itemList.get(getAdapterPosition()).getId());
+                    context.startActivity(intent);
                 }
             });
         }

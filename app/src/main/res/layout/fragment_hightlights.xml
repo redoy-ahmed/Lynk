@@ -30,18 +30,18 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
-                    android:text="Hours"
+                    android:layout_weight=".6"
+                    android:text="Email"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/hours_textView"
+                    android:id="@+id/email_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".6"
-                    android:text="Mon - Sun 8:00 am - 7:00 pm"
+                    android:layout_weight=".4"
+                    android:text="info@regalfurniturebd.com"
                     android:textColor="@color/colorAccent"
                     android:textSize="16dp" />
 
@@ -63,18 +63,18 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".6"
                     android:paddingBottom="5dp"
-                    android:text="Brand"
+                    android:text="Category"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/brand_type_textView"
+                    android:id="@+id/category_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".6"
+                    android:layout_weight=".4"
                     android:paddingBottom="5dp"
                     android:text="General"
                     android:textColor="@color/colorAccent"
@@ -98,20 +98,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".6"
                     android:paddingBottom="5dp"
-                    android:text="Services Offered"
+                    android:text="Website"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/services_offered_textView"
+                    android:id="@+id/website_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".6"
+                    android:layout_weight=".4"
                     android:paddingBottom="5dp"
-                    android:text="Kitchens, Bathrooms, Siding, Windows, Roofing, Basements, Sunrooms, Handyman, Extensions, New Construction"
+                    android:text="Kitchens, Bathrooms, Siding"
                     android:textColor="@color/colorAccent"
                     android:textSize="16dp" />
 
@@ -133,20 +133,20 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".6"
                     android:paddingBottom="5dp"
-                    android:text="Licenses,Certifications"
+                    android:text="Description"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/licenses_certifications_textView"
+                    android:id="@+id/description_TextView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".6"
+                    android:layout_weight=".4"
                     android:paddingBottom="5dp"
-                    android:text="Fully Licensed and Insured,A rating - Better Business Bureau,A rating - Consumer Affairs,Member of National Kitchen and Bath Association (NKBA)"
+                    android:text="Fully Licensed and Insured,A rating - "
                     android:textColor="@color/colorAccent"
                     android:textSize="16dp" />
 
@@ -168,18 +168,18 @@
                 <TextView
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".4"
+                    android:layout_weight=".6"
                     android:paddingBottom="5dp"
-                    android:text="Neighbourhoods"
+                    android:text="Location"
                     android:textColor="@color/colorAccent"
                     android:textSize="18dp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:id="@+id/neighbourhood_textView"
+                    android:id="@+id/location_textView"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:layout_weight=".6"
+                    android:layout_weight=".4"
                     android:paddingBottom="5dp"
                     android:text="Central LA, Mid-City West"
                     android:textColor="@color/colorAccent"

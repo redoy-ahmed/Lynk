@@ -3,9 +3,7 @@ package com.example.redoy.lynk.model;
 public class Updated_at {
 
     private String timezone;
-
     private String timezone_type;
-
     private String date;
 
     public String getTimezone() {

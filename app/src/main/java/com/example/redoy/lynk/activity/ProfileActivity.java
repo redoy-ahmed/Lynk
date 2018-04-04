@@ -1,8 +1,11 @@
 package com.example.redoy.lynk.activity;
 
+import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.media.Image;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -15,18 +18,32 @@ import android.support.v7.graphics.Palette;
 import android.support.v7.widget.Toolbar;
 import android.util.Log;
 import android.view.MenuItem;
+import android.widget.ImageView;
+import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.application.ApiClient;
+import com.example.redoy.lynk.application.RetrofitLynk;
 import com.example.redoy.lynk.fragment.DealsFragment;
 import com.example.redoy.lynk.fragment.HighlightsFragment;
 import com.example.redoy.lynk.fragment.PhotosFragment;
 import com.example.redoy.lynk.fragment.ReviewsFragment;
+import com.example.redoy.lynk.model.ProfileResponse;
+import com.example.redoy.lynk.model.SignUp;
+import com.example.redoy.lynk.model.SignUpResponse;
+import com.example.redoy.lynk.util.CustomSweetAlertDialog;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class ProfileActivity extends AppCompatActivity {
 
@@ -42,17 +59,66 @@ public class ProfileActivity extends AppCompatActivity {
     @BindView(R.id.htab_collapse_toolbar)
     CollapsingToolbarLayout collapsingToolbarLayout;
 
+    @BindView(R.id.htab_headerImageView)
+    ImageView headerImageView;
+
+    ArrayList<ProfileResponse> profileResponses;
+    private String id;
+
+    private static final String TAG = ProfileActivity.class.getSimpleName();
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_profile);
-        initializeWidgets();
+        initializeData();
+    }
+
+    private void initializeData() {
+        id = getIntent().getStringExtra("id");
+        profileResponses = new ArrayList<>();
+
+        CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(this, "Loading...");
+        dialog.show();
+
+        RetrofitLynk apiService = ApiClient.getLynkClient().create(RetrofitLynk.class);
+
+        Call<ProfileResponse> call = apiService.getProfileOutput(id);
+        call.enqueue(new Callback<ProfileResponse>() {
+            @Override
+            public void onResponse(final Response<ProfileResponse> response, Retrofit retrofit) {
+                if (response.body() != null) {
+                    final ProfileResponse profileResponse = response.body();
+                    final Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            dialog.dismiss();
+                            profileResponses.add(profileResponse);
+                            handler.removeCallbacksAndMessages(true);
+                            initializeWidgets();
+                        }
+                    };
+                    handler.postDelayed(runnable, 100);
+                } else {
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Sorry, no data found.", Toast.LENGTH_LONG).show();
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
     private void initializeWidgets() {
         ButterKnife.bind(this);
         setSupportActionBar(toolbar);
-        getSupportActionBar().setTitle("Profile");
+        getSupportActionBar().setTitle(profileResponses.get(0).getData().getTitle());
+        Picasso.get().load(profileResponses.get(0).getData().getFeature_img()).into(headerImageView);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
         setupViewPager(viewPager);
         tabLayout.setupWithViewPager(viewPager);
@@ -81,10 +147,10 @@ public class ProfileActivity extends AppCompatActivity {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
-        adapter.addFrag(new HighlightsFragment(), "Highlights");
-        adapter.addFrag(new DealsFragment(), "Deal");
-        adapter.addFrag(new PhotosFragment(), "Photo");
-        adapter.addFrag(new ReviewsFragment(), "Reviews");
+        adapter.addFrag(new HighlightsFragment(profileResponses), "Highlights");
+        adapter.addFrag(new DealsFragment(profileResponses), "Deal");
+        adapter.addFrag(new PhotosFragment(profileResponses), "Photo");
+        adapter.addFrag(new ReviewsFragment(id), "Reviews");
         viewPager.setAdapter(adapter);
     }
 

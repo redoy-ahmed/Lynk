@@ -1,5 +1,6 @@
 package com.example.redoy.lynk.fragment;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
@@ -10,12 +11,14 @@ import android.view.ViewGroup;
 import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.adapter.AutoFitGridLayoutManager;
 import com.example.redoy.lynk.adapter.RecyclerViewAdapterPhotos;
+import com.example.redoy.lynk.model.ProfileResponse;
 
 import java.util.ArrayList;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
 
+@SuppressLint("ValidFragment")
 public class PhotosFragment extends Fragment {
 
     @BindView(R.id.recycler_view_photos)
@@ -23,7 +26,15 @@ public class PhotosFragment extends Fragment {
 
     RecyclerViewAdapterPhotos recyclerViewAdapterPhotos;
     public AutoFitGridLayoutManager layoutManager;
+
+    private ArrayList<ProfileResponse> profileResponses;
+
     View rootView;
+
+    @SuppressLint("ValidFragment")
+    public PhotosFragment(ArrayList<ProfileResponse> profileResponses) {
+        this.profileResponses = profileResponses;
+    }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {

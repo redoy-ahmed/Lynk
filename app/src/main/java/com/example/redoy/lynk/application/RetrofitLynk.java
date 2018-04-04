@@ -4,6 +4,8 @@ package com.example.redoy.lynk.application;
 import com.example.redoy.lynk.model.Example;
 import com.example.redoy.lynk.model.LogIn;
 import com.example.redoy.lynk.model.LogInResponse;
+import com.example.redoy.lynk.model.ProfileResponse;
+import com.example.redoy.lynk.model.ProfileReviewResponse;
 import com.example.redoy.lynk.model.SearchResponse;
 import com.example.redoy.lynk.model.SignUp;
 import com.example.redoy.lynk.model.SignUpResponse;
@@ -12,6 +14,7 @@ import retrofit.Call;
 import retrofit.http.Body;
 import retrofit.http.GET;
 import retrofit.http.POST;
+import retrofit.http.Path;
 import retrofit.http.Query;
 
 public interface RetrofitLynk {
@@ -27,4 +30,10 @@ public interface RetrofitLynk {
 
     @POST("directory/search/by/title/category?")
     Call<SearchResponse> getSearchOutput(@Query("title") String title);
+
+    @POST("directory/details/by/id?")
+    Call<ProfileResponse> getProfileOutput(@Query("id") String id);
+
+    @GET("directory/reviews/by/dirid/{id}")
+    Call<ProfileReviewResponse> getProfileReviews(@Path("id") String id);
 }

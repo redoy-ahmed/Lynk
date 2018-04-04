@@ -5,11 +5,13 @@ public class ReviewItem {
     private String name;
     private String timestamp;
     private String description;
+    private String ratedByUser;
 
-    public ReviewItem(String name, String timestamp, String description) {
+    public ReviewItem(String name, String timestamp, String description, String ratedByUser) {
         this.name = name;
         this.timestamp = timestamp;
         this.description = description;
+        this.ratedByUser = ratedByUser;
     }
 
     public String getName() {
@@ -34,5 +36,13 @@ public class ReviewItem {
 
     public void setDescription(String description) {
         this.description = description;
+    }
+
+    public String getRatedByUser() {
+        return ratedByUser;
+    }
+
+    public void setRatedByUser(String ratedByUser) {
+        this.ratedByUser = ratedByUser;
     }
 }

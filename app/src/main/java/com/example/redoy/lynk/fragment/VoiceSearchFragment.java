@@ -1,5 +1,6 @@
 package com.example.redoy.lynk.fragment;
 
+import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -31,6 +32,7 @@ import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
@@ -63,8 +65,8 @@ public class VoiceSearchFragment extends Fragment {
 
     public final int REQ_CODE_SPEECH_INPUT = 100;
     public String resultText;
-    private static final String TAG = LogInActivity.class.getSimpleName();
-    ArrayList<VoiceSearchItem> searchResponses = new ArrayList<>();
+    private static final String TAG = VoiceSearchFragment.class.getSimpleName();
+    private ArrayList<VoiceSearchItem> searchResponses = new ArrayList<>();
 
     public RecyclerViewAdapterVoiceSearch recyclerViewAdapterVoiceSearch;
     public AutoFitGridLayoutManager layoutManager;
@@ -86,10 +88,17 @@ public class VoiceSearchFragment extends Fragment {
                 showSearchDialog();
             }
         });
+
+        emptyTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+
+            }
+        });
     }
 
     private void showSearchDialog() {
-        /*Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -99,9 +108,7 @@ public class VoiceSearchFragment extends Fragment {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
             Toast.makeText(rootView.getContext(), getString(R.string.speech_not_supported), Toast.LENGTH_SHORT).show();
-        }*/
-
-        getSearchResult("Ibrahim Furniture");
+        }
     }
 
     @Override
@@ -117,13 +124,6 @@ public class VoiceSearchFragment extends Fragment {
                     microPhoneImageView.setVisibility(View.GONE);
                     hintTextView.setVisibility(View.GONE);
                     getSearchResult(resultText);
-
-                    if (recyclerViewAdapterVoiceSearch.getItemCount() != 0) {
-                        voiceSearchRecyclerView.setVisibility(View.VISIBLE);
-                    } else {
-                        emptyTextView.setVisibility(View.VISIBLE);
-                        emptyTextView.setText("No Data Found!");
-                    }
                 }
                 break;
             }
@@ -147,13 +147,16 @@ public class VoiceSearchFragment extends Fragment {
                     Runnable runnable = new Runnable() {
                         @Override
                         public void run() {
-                            if (searchResponse.getData().length > 0) {
+                            if (!searchResponse.getData().toString().equals("")) {
                                 dialog.dismiss();
 
                                 Data[] data = searchResponse.getData();
                                 for (int i = 0; i < data.length; i++) {
                                     searchResponses.add(new VoiceSearchItem(data[i].getId(), data[i].getTitle(), data[i].getFeature_img(), data[i].getCity()));
                                 }
+                                initializeData();
+                                handler.removeCallbacksAndMessages(true);
+                            } else if (searchResponse.getData().toString().equals("")) {
                                 initializeData();
                                 handler.removeCallbacksAndMessages(true);
                             } else {
@@ -164,7 +167,6 @@ public class VoiceSearchFragment extends Fragment {
                     handler.postDelayed(runnable, 100);
                 }
             }
-
             @Override
             public void onFailure(Throwable t) {
                 Log.e(TAG, t.toString());
@@ -173,14 +175,19 @@ public class VoiceSearchFragment extends Fragment {
     }
 
     private void initializeData() {
-        microPhoneImageView.setVisibility(View.GONE);
-        hintTextView.setVisibility(View.GONE);
-        voiceSearchRecyclerView.setVisibility(View.VISIBLE);
-
         recyclerViewAdapterVoiceSearch = new RecyclerViewAdapterVoiceSearch(rootView.getContext(), searchResponses, getFragmentManager());
         voiceSearchRecyclerView.setAdapter(recyclerViewAdapterVoiceSearch);
         layoutManager = new AutoFitGridLayoutManager(rootView.getContext(), 500);
         voiceSearchRecyclerView.setLayoutManager(layoutManager);
+
+        if (recyclerViewAdapterVoiceSearch.getItemCount() != 0) {
+            voiceSearchRecyclerView.setVisibility(View.VISIBLE);
+            hintTextView.setVisibility(View.GONE);
+            voiceSearchRecyclerView.setVisibility(View.VISIBLE);
+        } else {
+            emptyTextView.setVisibility(View.VISIBLE);
+            emptyTextView.setText("No Data Found Retry!");
+        }
     }
 
     @Override

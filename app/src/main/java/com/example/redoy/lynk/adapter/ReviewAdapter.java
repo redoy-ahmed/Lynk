@@ -5,9 +5,12 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.model.ProfileReviewData;
+import com.example.redoy.lynk.model.ProfileReviewResponse;
 import com.example.redoy.lynk.model.ReviewItem;
 
 import java.util.List;
@@ -34,11 +37,10 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
     @Override
     public void onBindViewHolder(ReviewAdapterViewHolder holder, int position) {
-        ReviewItem profileItem = reviewItems.get(position);
-
-        holder.mUserNameTextView.setText(profileItem.getName());
-        holder.mTimeStampTextView.setText(profileItem.getTimestamp());
-        holder.mDescriptionTextView.setText(String.valueOf(profileItem.getDescription()));
+        holder.mUserNameTextView.setText(reviewItems.get(position).getName());
+        holder.mTimeStampTextView.setText(reviewItems.get(position).getTimestamp());
+        holder.mDescriptionTextView.setText(reviewItems.get(position).getDescription());
+        holder.mRatingBar.setRating(Float.parseFloat(reviewItems.get(position).getRatedByUser()));
     }
 
     @Override
@@ -56,6 +58,9 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
 
         @BindView(R.id.description_TextView)
         TextView mDescriptionTextView;
+
+        @BindView(R.id.ratingBar)
+        RatingBar mRatingBar;
 
         public ReviewAdapterViewHolder(View itemView) {
             super(itemView);
