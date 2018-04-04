@@ -1,11 +1,12 @@
 package com.example.redoy.lynk.fragment;
 
-import android.content.ActivityNotFoundException;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.Menu;
 import android.view.MenuInflater;
@@ -18,15 +19,25 @@ import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.activity.BusinessInformationRegistrationActivity;
+import com.example.redoy.lynk.activity.LogInActivity;
 import com.example.redoy.lynk.adapter.AutoFitGridLayoutManager;
 import com.example.redoy.lynk.adapter.RecyclerViewAdapterVoiceSearch;
+import com.example.redoy.lynk.application.ApiClient;
+import com.example.redoy.lynk.application.RetrofitLynk;
+import com.example.redoy.lynk.model.Data;
+import com.example.redoy.lynk.model.SearchResponse;
 import com.example.redoy.lynk.model.VoiceSearchItem;
+import com.example.redoy.lynk.util.CustomSweetAlertDialog;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
-import java.util.Locale;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 import static android.app.Activity.RESULT_OK;
 
@@ -51,8 +62,9 @@ public class VoiceSearchFragment extends Fragment {
     public RecyclerView voiceSearchRecyclerView;
 
     public final int REQ_CODE_SPEECH_INPUT = 100;
-    ArrayList<String> searchResult;
     public String resultText;
+    private static final String TAG = LogInActivity.class.getSimpleName();
+    ArrayList<VoiceSearchItem> searchResponses = new ArrayList<>();
 
     public RecyclerViewAdapterVoiceSearch recyclerViewAdapterVoiceSearch;
     public AutoFitGridLayoutManager layoutManager;
@@ -62,7 +74,6 @@ public class VoiceSearchFragment extends Fragment {
         rootView = inflater.inflate(R.layout.fragment_voice_search, container, false);
         ButterKnife.bind(this, rootView);
         initializeWidgets();
-        initializeData();
 
         return rootView;
     }
@@ -78,7 +89,7 @@ public class VoiceSearchFragment extends Fragment {
     }
 
     private void showSearchDialog() {
-        Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
+        /*Intent intent = new Intent(RecognizerIntent.ACTION_RECOGNIZE_SPEECH);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE_MODEL,
                 RecognizerIntent.LANGUAGE_MODEL_FREE_FORM);
         intent.putExtra(RecognizerIntent.EXTRA_LANGUAGE, Locale.getDefault());
@@ -88,7 +99,9 @@ public class VoiceSearchFragment extends Fragment {
             startActivityForResult(intent, REQ_CODE_SPEECH_INPUT);
         } catch (ActivityNotFoundException a) {
             Toast.makeText(rootView.getContext(), getString(R.string.speech_not_supported), Toast.LENGTH_SHORT).show();
-        }
+        }*/
+
+        getSearchResult("Ibrahim Furniture");
     }
 
     @Override
@@ -97,14 +110,13 @@ public class VoiceSearchFragment extends Fragment {
 
         switch (requestCode) {
             case REQ_CODE_SPEECH_INPUT: {
-
                 if (resultCode == RESULT_OK && null != data) {
                     ArrayList<String> result = data.getStringArrayListExtra(RecognizerIntent.EXTRA_RESULTS);
                     resultText = result.get(0);
                     Toast.makeText(rootView.getContext(), resultText, Toast.LENGTH_LONG).show();
-                    recyclerViewAdapterVoiceSearch.getFilter().filter(resultText);
                     microPhoneImageView.setVisibility(View.GONE);
                     hintTextView.setVisibility(View.GONE);
+                    getSearchResult(resultText);
 
                     if (recyclerViewAdapterVoiceSearch.getItemCount() != 0) {
                         voiceSearchRecyclerView.setVisibility(View.VISIBLE);
@@ -118,34 +130,57 @@ public class VoiceSearchFragment extends Fragment {
         }
     }
 
-    private void initializeData() {
-        //searchResult = getIntent().getStringArrayListExtra("results");
-        searchResult = new ArrayList<>();
-        searchResult.add("Abc");
-        searchResult.add("Kolapata Restaurant");
-        searchResult.add("Bismillah Hotel");
-        searchResult.add("Mehedi Hotel");
-        searchResult.add("Cha Kunjo");
-        searchResult.add("New Bismillah Hotel");
-        searchResult.add("Marwa Kebab House");
-        searchResult.add("CP");
-        searchResult.add("Regency Hotel");
+    private void getSearchResult(String resultText) {
+        CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(rootView.getContext(), "Searching...");
+        dialog.show();
 
-        ArrayList<VoiceSearchItem> rowListItem = getAllItemList(searchResult);
-        recyclerViewAdapterVoiceSearch = new RecyclerViewAdapterVoiceSearch(rootView.getContext(), rowListItem, getFragmentManager());
-        voiceSearchRecyclerView.setAdapter(recyclerViewAdapterVoiceSearch);
+        RetrofitLynk apiService = ApiClient.getLynkClient().create(RetrofitLynk.class);
 
-        layoutManager = new AutoFitGridLayoutManager(rootView.getContext(), 500);
-        voiceSearchRecyclerView.setLayoutManager(layoutManager);
+        Call<SearchResponse> call = apiService.getSearchOutput(resultText);
+        call.enqueue(new Callback<SearchResponse>() {
+            @Override
+            public void onResponse(final Response<SearchResponse> response, Retrofit retrofit) {
+                if (response.body() != null) {
+                    final SearchResponse searchResponse = response.body();
+                    final Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            if (searchResponse.getData().length > 0) {
+                                dialog.dismiss();
+
+                                Data[] data = searchResponse.getData();
+                                for (int i = 0; i < data.length; i++) {
+                                    searchResponses.add(new VoiceSearchItem(data[i].getId(), data[i].getTitle(), data[i].getFeature_img(), data[i].getCity()));
+                                }
+                                initializeData();
+                                handler.removeCallbacksAndMessages(true);
+                            } else {
+                                handler.postDelayed(this, 100);
+                            }
+                        }
+                    };
+                    handler.postDelayed(runnable, 100);
+                }
+            }
+
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
-    private ArrayList<VoiceSearchItem> getAllItemList(ArrayList<String> searchResult) {
+    private void initializeData() {
+        microPhoneImageView.setVisibility(View.GONE);
+        hintTextView.setVisibility(View.GONE);
+        voiceSearchRecyclerView.setVisibility(View.VISIBLE);
 
-        ArrayList<VoiceSearchItem> allItems = new ArrayList<>();
-        for (int i = 0; i < searchResult.size(); i++) {
-            allItems.add(new VoiceSearchItem(searchResult.get(i), R.drawable.a, "#09A9FF"));
-        }
-        return allItems;
+        recyclerViewAdapterVoiceSearch = new RecyclerViewAdapterVoiceSearch(rootView.getContext(), searchResponses, getFragmentManager());
+        voiceSearchRecyclerView.setAdapter(recyclerViewAdapterVoiceSearch);
+        layoutManager = new AutoFitGridLayoutManager(rootView.getContext(), 500);
+        voiceSearchRecyclerView.setLayoutManager(layoutManager);
     }
 
     @Override

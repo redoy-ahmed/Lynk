@@ -4,6 +4,7 @@ package com.example.redoy.lynk.application;
 import com.example.redoy.lynk.model.Example;
 import com.example.redoy.lynk.model.LogIn;
 import com.example.redoy.lynk.model.LogInResponse;
+import com.example.redoy.lynk.model.SearchResponse;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -18,4 +19,7 @@ public interface RetrofitLynk {
 
     @POST("auth/login")
     Call<LogInResponse> getLogInOutput(@Body LogIn login);
+
+    @POST("directory/search/by/title/category?")
+    Call<SearchResponse> getSearchOutput(@Query("title") String title);
 }

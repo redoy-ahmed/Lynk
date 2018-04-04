@@ -2,22 +2,19 @@ package com.example.redoy.lynk.adapter;
 
 import android.content.Context;
 import android.content.Intent;
-import android.graphics.Color;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 
 import com.example.redoy.lynk.R;
-import com.example.redoy.lynk.activity.BusinessInformationRegistrationActivity;
 import com.example.redoy.lynk.activity.ProfileActivity;
 import com.example.redoy.lynk.model.VoiceSearchItem;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -28,16 +25,14 @@ import butterknife.ButterKnife;
  * Created by redoy.ahmed on 04-Mar-2018.
  */
 
-public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<RecyclerViewAdapterVoiceSearch.RecyclerViewHolderHome> implements Filterable {
+public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<RecyclerViewAdapterVoiceSearch.RecyclerViewHolderHome> {
 
     private ArrayList<VoiceSearchItem> itemList;
-    private ArrayList<VoiceSearchItem> itemListFiltered;
     private Context context;
     private static FragmentManager fragmentManager;
 
     public RecyclerViewAdapterVoiceSearch(Context context, ArrayList<VoiceSearchItem> itemList, FragmentManager fragmentManager) {
         this.itemList = itemList;
-        this.itemListFiltered = itemList;
         this.context = context;
         this.fragmentManager = fragmentManager;
     }
@@ -52,14 +47,14 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
 
     @Override
     public void onBindViewHolder(RecyclerViewHolderHome holder, int position) {
-        holder.itemName.setText(itemListFiltered.get(position).getName());
-        holder.itemPhoto.setImageResource(itemListFiltered.get(position).getPhoto());
-        holder.relativeLayout.setBackgroundColor(Color.parseColor(itemListFiltered.get(position).getColor()));
+        holder.itemName.setText(itemList.get(position).getTitle());
+        Picasso.get().load(itemList.get(position).getFeature_img()).into(holder.itemPhoto);
+        holder.itemCityName.setText(itemList.get(position).getCity());
     }
 
     @Override
     public int getItemCount() {
-        return this.itemListFiltered.size();
+        return this.itemList.size();
     }
 
     public static class RecyclerViewHolderHome extends RecyclerView.ViewHolder {
@@ -69,6 +64,10 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
 
         @BindView(R.id.list_item_imageView)
         public ImageView itemPhoto;
+
+        @BindView(R.id.list_item_city_textView)
+        public TextView itemCityName;
+
         @BindView(R.id.relativeLayout)
         public RelativeLayout relativeLayout;
 
@@ -84,36 +83,4 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
             });
         }
     }
-
-    @Override
-    public Filter getFilter() {
-        return new Filter() {
-            @Override
-            protected FilterResults performFiltering(CharSequence charSequence) {
-                String charString = charSequence.toString();
-                if (charString.isEmpty()) {
-                    itemListFiltered = itemList;
-                } else {
-                    ArrayList<VoiceSearchItem> filteredList = new ArrayList<>();
-                    for (VoiceSearchItem row : itemList) {
-                        if (row.getName().toLowerCase().contains(charString.toLowerCase())) {
-                            filteredList.add(row);
-                        }
-                    }
-                    itemListFiltered = filteredList;
-                }
-
-                FilterResults filterResults = new FilterResults();
-                filterResults.values = itemListFiltered;
-                return filterResults;
-            }
-
-            @Override
-            protected void publishResults(CharSequence charSequence, FilterResults filterResults) {
-                itemListFiltered = (ArrayList<VoiceSearchItem>) filterResults.values;
-                notifyDataSetChanged();
-            }
-        };
-    }
 }
-

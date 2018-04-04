@@ -191,12 +191,16 @@ public class LogInActivity extends AppCompatActivity implements ValidationListen
                         @Override
                         public void run() {
                             if (logInResponse.getAccess_token().length() > 0) {
+
                                 dialog.dismiss();
+
                                 shared.setAccessToken(logInResponse.getAccess_token());
-                                handler.removeCallbacksAndMessages(true);
                                 shared.saveIsLogin(true);
                                 shared.saveLogin(strEmail, strPassword);
+
                                 startActivity(new Intent(getApplicationContext(), MainActivity.class));
+
+                                handler.removeCallbacksAndMessages(true);
                             } else {
                                 handler.postDelayed(this, 100);
                             }
@@ -208,6 +212,7 @@ public class LogInActivity extends AppCompatActivity implements ValidationListen
                     Toast.makeText(getApplicationContext(), "Invalid credentials.", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Log.e(TAG, t.toString());

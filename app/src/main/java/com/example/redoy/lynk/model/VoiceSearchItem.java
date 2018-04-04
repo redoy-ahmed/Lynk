@@ -5,37 +5,32 @@ package com.example.redoy.lynk.model;
  */
 
 public class VoiceSearchItem {
-    private String name;
-    private int photo;
-    private String color;
 
-    public VoiceSearchItem(String name, int photo, String color) {
-        this.name = name;
-        this.photo = photo;
-        this.color = color;
+    private String id;
+    private String title;
+    private String feature_img;
+    private String city;
+
+    public VoiceSearchItem(String id, String title, String feature_img, String city) {
+        this.id = id;
+        this.title = title;
+        this.feature_img = feature_img;
+        this.city = city;
     }
 
-    public String getName() {
-        return name;
+    public String getId() {
+        return id;
     }
 
-    public void setName(String name) {
-        this.name = name;
+    public String getTitle() {
+        return title;
     }
 
-    public int getPhoto() {
-        return photo;
+    public String getFeature_img() {
+        return feature_img;
     }
 
-    public void setPhoto(int photo) {
-        this.photo = photo;
-    }
-
-    public String getColor() {
-        return color;
-    }
-
-    public void setColor(String color) {
-        this.color = color;
+    public String getCity() {
+        return city;
     }
 }
