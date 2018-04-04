@@ -3,8 +3,10 @@ package com.example.redoy.lynk.activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.Handler;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.app.AppCompatActivity;
+import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.Button;
@@ -14,19 +16,29 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.application.ApiClient;
 import com.example.redoy.lynk.application.LynkApplication;
+import com.example.redoy.lynk.application.RetrofitLynk;
+import com.example.redoy.lynk.model.LogIn;
+import com.example.redoy.lynk.model.LogInResponse;
 import com.example.redoy.lynk.service.CustomSharedPreference;
 import com.example.redoy.lynk.util.ConnectionStatus;
+import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.Validator.ValidationListener;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.mobsandgeeks.saripaar.annotation.Password;
+import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.List;
 
 import butterknife.BindView;
 import butterknife.ButterKnife;
+import retrofit.Call;
+import retrofit.Callback;
+import retrofit.Response;
+import retrofit.Retrofit;
 
 public class LogInActivity extends AppCompatActivity implements ValidationListener {
 
@@ -37,7 +49,7 @@ public class LogInActivity extends AppCompatActivity implements ValidationListen
     @BindView(R.id.login_edit_text_widget_email)
     EditText mEditTextEmail;
 
-    @Password(scheme = Password.Scheme.ALPHA_NUMERIC, message = "Password should be Alpha Numeric")
+    @Password(scheme = Password.Scheme.ANY, message = "Password should be Alpha Numeric")
     @NotEmpty
     @BindView(R.id.login_edit_text_widget_password)
     EditText mEditTextPassword;
@@ -52,6 +64,8 @@ public class LogInActivity extends AppCompatActivity implements ValidationListen
     String strPassword;
     private Validator validator;
     private CustomSharedPreference shared;
+    private static final String TAG = LogInActivity.class.getSimpleName();
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -157,9 +171,48 @@ public class LogInActivity extends AppCompatActivity implements ValidationListen
     }
 
     private void getLogIn() {
-        shared.saveIsLogin(true);
-        shared.saveLogin(strEmail, strPassword);
-        startActivity(new Intent(this, MainActivity.class));
+
+        CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(this, "Logging In...");
+        dialog.show();
+
+        RetrofitLynk apiService = ApiClient.getLynkClient().create(RetrofitLynk.class);
+
+        LogIn login = new LogIn(strEmail, strPassword);
+
+        Call<LogInResponse> call = apiService.getLogInOutput(login);
+        call.enqueue(new Callback<LogInResponse>() {
+            @Override
+            public void onResponse(final Response<LogInResponse> response, Retrofit retrofit) {
+                if (response.body() != null) {
+                    final LogInResponse logInResponse = response.body();
+                    final Handler handler = new Handler();
+                    Runnable runnable = new Runnable() {
+                        @Override
+                        public void run() {
+                            if (logInResponse.getAccess_token().length() > 0) {
+                                dialog.dismiss();
+                                shared.setAccessToken(logInResponse.getAccess_token());
+                                handler.removeCallbacksAndMessages(true);
+                                shared.saveIsLogin(true);
+                                shared.saveLogin(strEmail, strPassword);
+                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                            } else {
+                                handler.postDelayed(this, 100);
+                            }
+                        }
+                    };
+                    handler.postDelayed(runnable, 100);
+                } else {
+                    dialog.dismiss();
+                    Toast.makeText(getApplicationContext(), "Invalid credentials.", Toast.LENGTH_LONG).show();
+                }
+            }
+            @Override
+            public void onFailure(Throwable t) {
+                Log.e(TAG, t.toString());
+            }
+        });
     }
 
     @Override

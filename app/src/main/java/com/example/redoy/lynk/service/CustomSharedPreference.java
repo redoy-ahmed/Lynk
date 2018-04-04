@@ -12,6 +12,14 @@ public class CustomSharedPreference {
         sharedPref = context.getSharedPreferences(Constants.SHARED_PREF, 0);
     }
 
+    public void setAccessToken(String token) {
+        sharedPref.edit().putString(Constants.ACCESS_TOKEN, token).apply();
+    }
+
+    public String getAccessToken() {
+        return sharedPref.getString(Constants.ACCESS_TOKEN, "");
+    }
+
     public void setUserData(String userData) {
         sharedPref.edit().putString(Constants.USER_DATA, userData).apply();
     }
@@ -77,7 +85,7 @@ public class CustomSharedPreference {
         return sharedPref.getBoolean(Constants.IS_LOGGED_IN, false);
     }
 
-    public void saveLogin(String email,String password) {
+    public void saveLogin(String email, String password) {
         sharedPref.edit().putString(Constants.EMAIL, email).apply();
         sharedPref.edit().putString(Constants.PASSWORD, password).apply();
     }

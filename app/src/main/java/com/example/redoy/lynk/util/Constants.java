@@ -29,4 +29,6 @@ public class Constants {
 
     public static final String IS_LOGGED_REMEMBER = "IsLoggedRemember";
     public static final String IS_LOGGED_IN = "IsLoggedIn";
+
+    public static final String ACCESS_TOKEN = "ACCESS_TOKEN";
 }
