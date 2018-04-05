@@ -240,6 +240,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
                             for (int i = 0; i < categoryData.length; i++)
                                 categoryArray[i] = categoryData[i].getCat_name();
                             handler.removeCallbacksAndMessages(true);
+                            mTextViewBusinessCategory.setThreshold(1);
                             mTextViewBusinessCategory.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, categoryArray));
                         }
                     };
@@ -279,6 +280,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
                             for (int i = 0; i < thanaData.length; i++)
                                 thanaArray[i] = thanaData[i].getThana();
                             handler.removeCallbacksAndMessages(true);
+                            mTextViewThana.setThreshold(1);
                             mTextViewThana.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, thanaArray));
                         }
                     };

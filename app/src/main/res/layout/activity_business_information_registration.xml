@@ -75,6 +75,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large"
             android:background="@drawable/rounded_edittext_background"
+            android:ems="10"
             android:hint="@string/business_registration_hint_business_category"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
@@ -128,6 +129,7 @@
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large"
             android:background="@drawable/rounded_edittext_background"
+            android:ems="10"
             android:hint="@string/business_registration_hint_thana"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
