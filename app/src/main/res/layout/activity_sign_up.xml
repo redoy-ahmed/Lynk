@@ -23,7 +23,6 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/sign_up_login_hint_name"
             android:imeOptions="actionNone|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone|time"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <EditText
@@ -34,7 +33,6 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/sign_up_login_hint_email"
             android:imeOptions="actionNone|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone|time"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <EditText
@@ -45,7 +43,7 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/sign_up_login_hint_mobile"
             android:imeOptions="actionNone|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone|time"
+            android:inputType="phone"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <EditText

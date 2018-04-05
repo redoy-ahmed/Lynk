@@ -22,7 +22,6 @@
             android:layout_marginTop="@dimen/large"
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/sign_up_login_hint_email_or_mobile"
-            android:inputType="text|textCapCharacters|textCapWords|textCapSentences|textAutoCorrect|textAutoComplete|textMultiLine|textImeMultiLine|textNoSuggestions|textUri|textEmailAddress|textEmailSubject|textShortMessage|textLongMessage|textPersonName|textPostalAddress|textPassword|textVisiblePassword|textWebEditText|textFilter|textPhonetic|textWebEmailAddress|textWebPassword|phone|time"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <EditText

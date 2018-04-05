@@ -1,20 +1,34 @@
 package com.example.redoy.lynk.activity;
 
+import android.Manifest;
+import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
+import android.content.pm.PackageManager;
+import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.os.Looper;
+import android.support.annotation.NonNull;
+import android.support.annotation.Nullable;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
+import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
+import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Filter;
+import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
+import com.example.redoy.lynk.adapter.PlaceArrayAdapter;
 import com.example.redoy.lynk.application.ApiClient;
 import com.example.redoy.lynk.application.RetrofitLynk;
 import com.example.redoy.lynk.model.BusinessRegistration;
@@ -26,11 +40,39 @@ import com.example.redoy.lynk.model.ThanaResponse;
 import com.example.redoy.lynk.service.CustomSharedPreference;
 import com.example.redoy.lynk.util.ConnectionStatus;
 import com.example.redoy.lynk.util.CustomSweetAlertDialog;
+import com.google.android.gms.common.ConnectionResult;
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.common.api.PendingResult;
+import com.google.android.gms.common.api.ResultCallback;
+import com.google.android.gms.location.FusedLocationProviderClient;
+import com.google.android.gms.location.LocationCallback;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationResult;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.places.Place;
+import com.google.android.gms.location.places.PlaceBuffer;
+import com.google.android.gms.location.places.Places;
+import com.google.android.gms.maps.CameraUpdateFactory;
+import com.google.android.gms.maps.model.BitmapDescriptorFactory;
+import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
+import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
+import java.io.IOException;
+import java.io.InputStreamReader;
+import java.net.HttpURLConnection;
+import java.net.MalformedURLException;
+import java.net.URL;
+import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -40,15 +82,12 @@ import retrofit.Callback;
 import retrofit.Response;
 import retrofit.Retrofit;
 
-public class BusinessInformationRegistrationActivity extends AppCompatActivity implements Validator.ValidationListener {
-
-    /*@NotEmpty
-    @BindView(R.id.registration_edit_text_widget_full_name)
-    EditText mEditTextFullName;
+public class BusinessInformationRegistrationActivity extends AppCompatActivity implements Validator.ValidationListener, GoogleApiClient.OnConnectionFailedListener,
+        GoogleApiClient.ConnectionCallbacks {
 
     @NotEmpty
-    @BindView(R.id.registration_edit_text_widget_email)
-    EditText mEditTextEmail;
+    @BindView(R.id.registration_edit_text_widget_full_name)
+    EditText mEditTextFullName;
 
     @NotEmpty
     @BindView(R.id.registration_edit_text_widget_password)
@@ -56,35 +95,38 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
 
     @NotEmpty
     @BindView(R.id.registration_edit_text_widget_confirm_password)
-    TextView mTextViewConfirmPassword;*/
+    TextView mTextViewConfirmPassword;
 
     @NotEmpty
-    @BindView(R.id.registration_edit_text_widget_business_name)
-    TextView mTextViewBusinessName;
-
-    @NotEmpty
-    @BindView(R.id.registration_edit_text_widget_business_category)
-    AutoCompleteTextView mTextViewBusinessCategory;
-
-    /*@NotEmpty
-    @BindView(R.id.registration_edit_text_widget_google_location)
-    TextView mTextViewGoogleLocation;*/
-
-    @NotEmpty
-    @BindView(R.id.registration_edit_text_widget_business_location)
-    TextView mTextViewBusinessLocation;
-
-    /*@NotEmpty
-    @BindView(R.id.registration_edit_text_widget_phone)
-    TextView mTextViewPhone;*/
+    @BindView(R.id.registration_edit_text_widget_email)
+    EditText mEditTextEmail;
 
     @NotEmpty
     @BindView(R.id.registration_edit_text_widget_verified_phone)
     TextView mTextViewVerifiedPhone;
 
     @NotEmpty
+    @BindView(R.id.registration_edit_text_widget_business_name)
+    TextView mTextViewBusinessName;
+
+    @BindView(R.id.registration_edit_text_widget_business_description)
+    TextView mTextViewBusinessDescription;
+
+    @NotEmpty
+    @BindView(R.id.registration_edit_text_widget_business_location)
+    TextView mTextViewBusinessLocation;
+
+    @NotEmpty
+    @BindView(R.id.registration_edit_text_widget_business_category)
+    AutoCompleteTextView mTextViewBusinessCategory;
+
+    @NotEmpty
     @BindView(R.id.registration_edit_text_widget_thana)
     AutoCompleteTextView mTextViewThana;
+
+    @NotEmpty
+    @BindView(R.id.registration_edit_text_widget_google_location)
+    AutoCompleteTextView mTextViewGoogleLocation;
 
     @BindView(R.id.registration_edit_text_widget_deals)
     TextView mTextViewDeals;
@@ -95,10 +137,25 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
     private Validator validator;
 
     private String mBusinessNameString, mBusinessCategoryString, mBusinessLocationString, mBusinessVerifiedPhoneString, mBusinessThanaString, mBusinessDealsString;
+    private String mFullNameString, mBusinessDescriptionString, mEmailString, mPasswordString, mConfirmPasswordStrring, mGoogleLocationString;
+    private String mLatString, mLngString;
     private String token;
 
     String[] thanaArray;
     String[] categoryArray;
+
+    LocationRequest mLocationRequest;
+    protected static long MIN_UPDATE_INTERVAL = 30 * 1000;
+    FusedLocationProviderClient mFusedLocationClient;
+    Location mLastLocation;
+    double latitude;
+    double longitude;
+
+    private GoogleApiClient mGoogleApiClient;
+    private PlaceArrayAdapter mPlaceArrayAdapter;
+    private static final int GOOGLE_API_CLIENT_ID = 0;
+    private static final LatLngBounds BOUNDS_MOUNTAIN_VIEW = new LatLngBounds(
+            new LatLng(37.398160, -122.180831), new LatLng(37.430610, -121.972090));
 
     private static final String TAG = BusinessRegistration.class.getSimpleName();
 
@@ -106,15 +163,56 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_business_information_registration);
-        getCategory();
-        getThana();
+        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(getApplicationContext());
         initializeWidgets();
+    }
+
+    private void getGoogleLocation() {
+        mTextViewGoogleLocation.setThreshold(3);
+        mGoogleApiClient = new GoogleApiClient.Builder(this)
+                .addApi(Places.GEO_DATA_API)
+                .enableAutoManage(this, GOOGLE_API_CLIENT_ID, this)
+                .addConnectionCallbacks(this)
+                .build();
+        mPlaceArrayAdapter = new PlaceArrayAdapter(this, android.R.layout.simple_list_item_1, BOUNDS_MOUNTAIN_VIEW, null);
+        mTextViewGoogleLocation.setAdapter(mPlaceArrayAdapter);
+    }
+
+    @Override
+    public void onConnected(@Nullable Bundle bundle) {
+
+        mPlaceArrayAdapter.setGoogleApiClient(mGoogleApiClient);
+        Log.i(TAG, "Google Places API connected.");
+
+    }
+
+    @Override
+    public void onConnectionSuspended(int i) {
+        mPlaceArrayAdapter.setGoogleApiClient(null);
+        Log.e(TAG, "Google Places API connection suspended.");
+    }
+
+    @Override
+    public void onConnectionFailed(@NonNull ConnectionResult connectionResult) {
+
+        Log.e(TAG, "Google Places API connection failed with error code: "
+                + connectionResult.getErrorCode());
+
+        Toast.makeText(this,
+                "Google Places API connection failed with error code:" +
+                        connectionResult.getErrorCode(),
+                Toast.LENGTH_LONG).show();
+
     }
 
     private void initializeWidgets() {
         ButterKnife.bind(this);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+        getMyLocation();
+        getCategory();
+        getThana();
+        getGoogleLocation();
 
         validator = new Validator(this);
         validator.setValidationListener(this);
@@ -125,6 +223,27 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
                 BusinessInformationRegistrationActivity.this.validator.validate();
             }
         });
+    }
+
+    @SuppressLint("RestrictedApi")
+    private void getMyLocation() {
+        mLocationRequest = new LocationRequest();
+        mLocationRequest.setInterval(MIN_UPDATE_INTERVAL);
+        mLocationRequest.setPriority(LocationRequest.PRIORITY_BALANCED_POWER_ACCURACY);
+
+        if (ContextCompat.checkSelfPermission(getApplicationContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
+            mFusedLocationClient.requestLocationUpdates(mLocationRequest, new LocationCallback() {
+                @Override
+                public void onLocationResult(LocationResult locationResult) {
+                    Location currentLocation = locationResult.getLastLocation();
+                    mLastLocation = currentLocation;
+                    latitude = currentLocation.getLatitude();
+                    longitude = currentLocation.getLongitude();
+                    mLatString = String.valueOf(latitude);
+                    mLngString = String.valueOf(longitude);
+                }
+            }, Looper.myLooper());
+        }
     }
 
     @Override
@@ -162,14 +281,22 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
         CustomSharedPreference customSharedPreference = new CustomSharedPreference(getApplicationContext());
         token = customSharedPreference.getAccessToken();
 
-        mBusinessNameString = mTextViewBusinessName.getText().toString();
-        mBusinessCategoryString = mTextViewBusinessCategory.getText().toString();
-        mBusinessLocationString = mTextViewBusinessLocation.getText().toString();
-        mBusinessThanaString = mTextViewThana.getText().toString();
+        mFullNameString = mEditTextFullName.getText().toString();
+        mPasswordString = mTextViewPassword.getText().toString();
+        mConfirmPasswordStrring = mTextViewConfirmPassword.getText().toString();
+        mEmailString = mEditTextEmail.getText().toString();
         mBusinessVerifiedPhoneString = mTextViewVerifiedPhone.getText().toString();
+        mBusinessNameString = mTextViewBusinessName.getText().toString();
+        mBusinessDescriptionString = mTextViewBusinessDescription.getText().toString();
+        mBusinessLocationString = mTextViewBusinessLocation.getText().toString();
+        mBusinessCategoryString = mTextViewBusinessCategory.getText().toString();
+        mBusinessThanaString = mTextViewThana.getText().toString();
+        mGoogleLocationString = mTextViewGoogleLocation.getText().toString();
         mBusinessDealsString = mTextViewDeals.getText().toString();
 
-        BusinessRegistration businessRegistration = new BusinessRegistration(mBusinessNameString, mBusinessCategoryString, mBusinessLocationString, mBusinessThanaString, mBusinessVerifiedPhoneString, mBusinessDealsString);
+        BusinessRegistration businessRegistration = new BusinessRegistration(mFullNameString, mPasswordString, mConfirmPasswordStrring, mEmailString,
+                mBusinessVerifiedPhoneString, mBusinessNameString, mBusinessDescriptionString, mBusinessLocationString, mBusinessCategoryString,
+                mBusinessThanaString, "", "", "", mGoogleLocationString, mLatString, mLngString, mBusinessDealsString);
 
         if (token.length() > 0) {
             RetrofitLynk apiService = ApiClient.getLynkClient().create(RetrofitLynk.class);
@@ -241,7 +368,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
                                 categoryArray[i] = categoryData[i].getCat_name();
                             handler.removeCallbacksAndMessages(true);
                             mTextViewBusinessCategory.setThreshold(1);
-                            mTextViewBusinessCategory.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, categoryArray));
+                            mTextViewBusinessCategory.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, categoryArray));
                         }
                     };
                     handler.postDelayed(runnable, 100);
@@ -281,7 +408,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
                                 thanaArray[i] = thanaData[i].getThana();
                             handler.removeCallbacksAndMessages(true);
                             mTextViewThana.setThreshold(1);
-                            mTextViewThana.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_dropdown_item_1line, thanaArray));
+                            mTextViewThana.setAdapter(new ArrayAdapter<>(getApplicationContext(), android.R.layout.simple_list_item_1, thanaArray));
                         }
                     };
                     handler.postDelayed(runnable, 100);

@@ -47,6 +47,7 @@
     <string name="business_registration_hint_password">Password</string>
     <string name="business_registration_hint_confirm_password">Confirm Password</string>
     <string name="business_registration_hint_business_name">Business Name</string>
+    <string name="business_registration_hint_business_description">Business Description</string>
     <string name="business_registration_hint_business_category">Business Category</string>
     <string name="business_registration_hint_google_location">Google Location</string>
     <string name="business_registration_hint_business_location">Business Address</string>

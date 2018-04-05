@@ -92,7 +92,9 @@ public class VoiceSearchFragment extends Fragment {
         emptyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-
+                emptyTextView.setVisibility(View.GONE);
+                hintTextView.setVisibility(View.VISIBLE);
+                microPhoneImageView.setVisibility(View.GONE);
             }
         });
     }
@@ -167,6 +169,7 @@ public class VoiceSearchFragment extends Fragment {
                     handler.postDelayed(runnable, 100);
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Log.e(TAG, t.toString());
