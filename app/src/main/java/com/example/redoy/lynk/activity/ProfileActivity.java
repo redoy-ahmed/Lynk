@@ -71,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initializeData() {
-        id = "1918";//getIntent().getStringExtra("id");
+        id = getIntent().getStringExtra("id");
         profileResponses = new ArrayList<>();
 
         CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();

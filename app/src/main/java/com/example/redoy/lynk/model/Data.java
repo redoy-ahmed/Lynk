@@ -8,6 +8,8 @@ public class Data {
     private String zip_code;
     private String total_reviews;
     private String google_location;
+    private String lat;
+    private String lng;
     private String verified_phone;
     private String city;
     private String country;
@@ -71,6 +73,22 @@ public class Data {
 
     public void setGoogle_location(String google_location) {
         this.google_location = google_location;
+    }
+
+    public String getLat() {
+        return lat;
+    }
+
+    public void setLat(String lat) {
+        this.lat = lat;
+    }
+
+    public String getLng() {
+        return lng;
+    }
+
+    public void setLng(String lng) {
+        this.lng = lng;
     }
 
     public String getVerified_phone() {

@@ -57,7 +57,7 @@ public class ReviewsFragment extends Fragment {
 
     ArrayList<ReviewItem> reviewItems;
     public final int REQ_CODE_SPEECH_INPUT = 100;
-    String resultString = "test review 1";
+    String resultString;
     View rootView;
 
     private String id;
@@ -188,7 +188,7 @@ public class ReviewsFragment extends Fragment {
                 .setPositiveButton("Post",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                postReview(resultString);
+                                postReview(userInput.getText().toString());
                                 dialog.dismiss();
                             }
                         })
@@ -229,7 +229,7 @@ public class ReviewsFragment extends Fragment {
                                 dialog.dismiss();
                                 Toast.makeText(rootView.getContext(), submitReviewResponse.getMessage(), Toast.LENGTH_LONG).show();
                                 handler.removeCallbacksAndMessages(true);
-                                initializeData();
+                                getReviewItems();
                             }
                         };
                         handler.postDelayed(runnable, 100);
