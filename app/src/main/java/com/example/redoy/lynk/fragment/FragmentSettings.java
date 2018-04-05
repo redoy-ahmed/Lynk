@@ -83,6 +83,7 @@ public class FragmentSettings extends Fragment {
                         sweetAlertDialog.cancel();
                         shared.saveIsLogin(false);
                         shared.setAccessToken("");
+                        linearLayout.removeAllViews();
                         initializeData();
                     }
                 })
