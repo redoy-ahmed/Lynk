@@ -62,7 +62,7 @@ public class ReviewsFragment extends Fragment {
 
     private String id;
     private float rating = 0;
-    private static final String TAG = LogInActivity.class.getSimpleName();
+    private static final String TAG = ReviewsFragment.class.getSimpleName();
 
     @SuppressLint("ValidFragment")
     public ReviewsFragment(String id) {

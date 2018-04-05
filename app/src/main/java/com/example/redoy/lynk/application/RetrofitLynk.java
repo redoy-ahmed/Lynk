@@ -1,6 +1,9 @@
 package com.example.redoy.lynk.application;
 
 
+import com.example.redoy.lynk.model.BusinessRegistration;
+import com.example.redoy.lynk.model.BusinessRegistrationResponse;
+import com.example.redoy.lynk.model.CategoryResponse;
 import com.example.redoy.lynk.model.Example;
 import com.example.redoy.lynk.model.LogIn;
 import com.example.redoy.lynk.model.LogInResponse;
@@ -11,6 +14,7 @@ import com.example.redoy.lynk.model.SearchResponse;
 import com.example.redoy.lynk.model.SignUp;
 import com.example.redoy.lynk.model.SignUpResponse;
 import com.example.redoy.lynk.model.SubmitReviewResponse;
+import com.example.redoy.lynk.model.ThanaResponse;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -41,4 +45,13 @@ public interface RetrofitLynk {
 
     @POST("auth/directory/review/post/by/dirid/{id}?")
     Call<SubmitReviewResponse> submitReview(@Path("id") String id, @Query("token") String token, @Body ReviewBody reviewBody);
+
+    @POST("/auth/add/new/business/post?token={token}")
+    Call<BusinessRegistrationResponse> submitBusinessRegistration(@Path("token") String token, @Body BusinessRegistration businessRegistration);
+
+    @GET("thana/ajax?")
+    Call<ThanaResponse> getThanaResponse();
+
+    @GET("cats?")
+    Call<CategoryResponse> getCategoryResponse();
 }

@@ -53,7 +53,7 @@
     <string name="business_registration_hint_phone">Phone</string>
     <string name="business_registration_hint_verified_phone">Verified Phone</string>
     <string name="business_registration_hint_thana">Thana</string>
-    <string name="business_registration_hint_description">Description</string>
+    <string name="business_registration_hint_deals">Deals</string>
 
     <string name="business_registration_screen_title">Business Registration</string>
 

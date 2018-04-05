@@ -15,7 +15,7 @@
 
         <requestFocus />
 
-        <EditText
+        <!--<EditText
             android:id="@+id/registration_edit_text_widget_full_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -57,7 +57,7 @@
             android:hint="@string/business_registration_hint_confirm_password"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
             android:inputType="textPassword|numberPassword"
-            android:padding="@dimen/edit_text_padding_login_screen_only" />
+            android:padding="@dimen/edit_text_padding_login_screen_only" />-->
 
         <EditText
             android:id="@+id/registration_edit_text_widget_business_name"
@@ -67,10 +67,9 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/business_registration_hint_business_name"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="textPassword|numberPassword"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/registration_edit_text_widget_business_category"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -78,10 +77,9 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/business_registration_hint_business_category"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="textPassword|numberPassword"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
-        <EditText
+        <!--<EditText
             android:id="@+id/registration_edit_text_widget_google_location"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -90,7 +88,7 @@
             android:hint="@string/business_registration_hint_google_location"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
             android:inputType="textPassword|numberPassword"
-            android:padding="@dimen/edit_text_padding_login_screen_only" />
+            android:padding="@dimen/edit_text_padding_login_screen_only" />-->
 
         <EditText
             android:id="@+id/registration_edit_text_widget_business_location"
@@ -100,10 +98,9 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/business_registration_hint_business_location"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="textPassword|numberPassword"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
-        <EditText
+        <!--<EditText
             android:id="@+id/registration_edit_text_widget_phone"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -112,7 +109,7 @@
             android:hint="@string/business_registration_hint_phone"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
             android:inputType="textPassword|numberPassword"
-            android:padding="@dimen/edit_text_padding_login_screen_only" />
+            android:padding="@dimen/edit_text_padding_login_screen_only" />-->
 
         <EditText
             android:id="@+id/registration_edit_text_widget_verified_phone"
@@ -122,10 +119,10 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/business_registration_hint_verified_phone"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="textPassword|numberPassword"
+            android:inputType="number"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
-        <EditText
+        <AutoCompleteTextView
             android:id="@+id/registration_edit_text_widget_thana"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
@@ -133,18 +130,16 @@
             android:background="@drawable/rounded_edittext_background"
             android:hint="@string/business_registration_hint_thana"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="textPassword|numberPassword"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <EditText
-            android:id="@+id/registration_edit_text_widget_description"
+            android:id="@+id/registration_edit_text_widget_deals"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginTop="@dimen/large"
             android:background="@drawable/rounded_edittext_background"
-            android:hint="@string/business_registration_hint_description"
+            android:hint="@string/business_registration_hint_deals"
             android:imeOptions="actionGo|actionSearch|actionSend|actionNext|actionDone|actionPrevious"
-            android:inputType="textPassword|numberPassword"
             android:padding="@dimen/edit_text_padding_login_screen_only" />
 
         <Button
