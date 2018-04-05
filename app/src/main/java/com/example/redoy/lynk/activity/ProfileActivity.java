@@ -1,9 +1,7 @@
 package com.example.redoy.lynk.activity;
 
-import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.media.Image;
 import android.os.Bundle;
 import android.os.Handler;
 import android.support.design.widget.CollapsingToolbarLayout;
@@ -29,8 +27,6 @@ import com.example.redoy.lynk.fragment.HighlightsFragment;
 import com.example.redoy.lynk.fragment.PhotosFragment;
 import com.example.redoy.lynk.fragment.ReviewsFragment;
 import com.example.redoy.lynk.model.ProfileResponse;
-import com.example.redoy.lynk.model.SignUp;
-import com.example.redoy.lynk.model.SignUpResponse;
 import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 import com.squareup.picasso.Picasso;
@@ -75,7 +71,7 @@ public class ProfileActivity extends AppCompatActivity {
     }
 
     private void initializeData() {
-        id = getIntent().getStringExtra("id");
+        id = "1918";//getIntent().getStringExtra("id");
         profileResponses = new ArrayList<>();
 
         CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();

@@ -6,9 +6,11 @@ import com.example.redoy.lynk.model.LogIn;
 import com.example.redoy.lynk.model.LogInResponse;
 import com.example.redoy.lynk.model.ProfileResponse;
 import com.example.redoy.lynk.model.ProfileReviewResponse;
+import com.example.redoy.lynk.model.ReviewBody;
 import com.example.redoy.lynk.model.SearchResponse;
 import com.example.redoy.lynk.model.SignUp;
 import com.example.redoy.lynk.model.SignUpResponse;
+import com.example.redoy.lynk.model.SubmitReviewResponse;
 
 import retrofit.Call;
 import retrofit.http.Body;
@@ -36,4 +38,7 @@ public interface RetrofitLynk {
 
     @GET("directory/reviews/by/dirid/{id}")
     Call<ProfileReviewResponse> getProfileReviews(@Path("id") String id);
+
+    @POST("auth/directory/review/post/by/dirid/{id}?")
+    Call<SubmitReviewResponse> submitReview(@Path("id") String id, @Query("token") String token, @Body ReviewBody reviewBody);
 }

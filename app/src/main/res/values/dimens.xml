@@ -47,7 +47,7 @@
     <dimen name="activity_margin_half">8dp</dimen>
     <dimen name="activity_margin_content">24dp</dimen>
     <dimen name="activity_padding">16dp</dimen>
-    <dimen name="placeholder_image">50dp</dimen>
+    <dimen name="placeholder_image">60dp</dimen>
     <dimen name="placeholder_text_height">8dp</dimen>
     <dimen name="activity_padding_horizontal">16dp</dimen>
     <dimen name="padding_10">10dp</dimen>

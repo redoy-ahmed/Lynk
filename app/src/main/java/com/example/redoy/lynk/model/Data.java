@@ -3,7 +3,7 @@ package com.example.redoy.lynk.model;
 public class Data {
 
     private String biz_description;
-    private String latest_review;
+    private Latest_review latest_review;
     private String feature_img;
     private String zip_code;
     private String total_reviews;
@@ -33,11 +33,11 @@ public class Data {
         this.biz_description = biz_description;
     }
 
-    public String getLatest_review() {
+    public Latest_review getLatest_review() {
         return latest_review;
     }
 
-    public void setLatest_review(String latest_review) {
+    public void setLatest_review(Latest_review latest_review) {
         this.latest_review = latest_review;
     }
 

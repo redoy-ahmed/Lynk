@@ -27,7 +27,10 @@ import com.example.redoy.lynk.application.ApiClient;
 import com.example.redoy.lynk.application.RetrofitLynk;
 import com.example.redoy.lynk.model.ProfileReviewData;
 import com.example.redoy.lynk.model.ProfileReviewResponse;
+import com.example.redoy.lynk.model.ReviewBody;
 import com.example.redoy.lynk.model.ReviewItem;
+import com.example.redoy.lynk.model.SubmitReviewResponse;
+import com.example.redoy.lynk.service.CustomSharedPreference;
 import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -54,7 +57,7 @@ public class ReviewsFragment extends Fragment {
 
     ArrayList<ReviewItem> reviewItems;
     public final int REQ_CODE_SPEECH_INPUT = 100;
-    String resultString;
+    String resultString = "test review 1";
     View rootView;
 
     private String id;
@@ -111,6 +114,7 @@ public class ReviewsFragment extends Fragment {
                     Toast.makeText(rootView.getContext(), "Sorry, no data found.", Toast.LENGTH_LONG).show();
                 }
             }
+
             @Override
             public void onFailure(Throwable t) {
                 Log.e(TAG, t.toString());
@@ -184,7 +188,7 @@ public class ReviewsFragment extends Fragment {
                 .setPositiveButton("Post",
                         new DialogInterface.OnClickListener() {
                             public void onClick(DialogInterface dialog, int id) {
-                                Toast.makeText(rootView.getContext(), "Review Posted", Toast.LENGTH_LONG).show();
+                                postReview(resultString);
                                 dialog.dismiss();
                             }
                         })
@@ -197,5 +201,63 @@ public class ReviewsFragment extends Fragment {
 
         AlertDialog alertDialog = alertDialogBuilder.create();
         alertDialog.show();
+    }
+
+    private void postReview(String resultString) {
+
+        CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(rootView.getContext(), "Loading...");
+        dialog.show();
+
+        CustomSharedPreference customSharedPreference = new CustomSharedPreference(rootView.getContext());
+        String token = customSharedPreference.getAccessToken();
+
+        if (token.length() > 0) {
+            RetrofitLynk apiService = ApiClient.getLynkClient().create(RetrofitLynk.class);
+            ReviewBody reviewBody = new ReviewBody(resultString);
+
+            Call<SubmitReviewResponse> call = apiService.submitReview(id, token, reviewBody);
+            call.enqueue(new Callback<SubmitReviewResponse>() {
+                @Override
+                public void onResponse(final Response<SubmitReviewResponse> response, Retrofit retrofit) {
+                    final SubmitReviewResponse submitReviewResponse = response.body();
+                    if (submitReviewResponse.getSuccess() == true) {
+                        final Handler handler = new Handler();
+                        Runnable runnable = new Runnable() {
+                            @Override
+                            public void run() {
+                                dialog.dismiss();
+                                Toast.makeText(rootView.getContext(), submitReviewResponse.getMessage(), Toast.LENGTH_LONG).show();
+                                handler.removeCallbacksAndMessages(true);
+                                initializeData();
+                            }
+                        };
+                        handler.postDelayed(runnable, 100);
+                    } else {
+                        dialog.dismiss();
+                        Toast.makeText(rootView.getContext(), "Review not Posted", Toast.LENGTH_LONG).show();
+                    }
+                }
+
+                @Override
+                public void onFailure(Throwable t) {
+                    Log.e(TAG, t.toString());
+                }
+            });
+        } else {
+            dialog.dismiss();
+            new SweetAlertDialog(rootView.getContext(), SweetAlertDialog.WARNING_TYPE)
+                    .setTitleText("Unauthorized")
+                    .setContentText("You Are not Logged In Please Log In to Post a Review")
+                    .setConfirmText("OK")
+                    .showCancelButton(true)
+                    .setConfirmClickListener(new SweetAlertDialog.OnSweetClickListener() {
+                        @Override
+                        public void onClick(SweetAlertDialog sweetAlertDialog) {
+                            sweetAlertDialog.cancel();
+                        }
+                    })
+                    .show();
+        }
     }
 }

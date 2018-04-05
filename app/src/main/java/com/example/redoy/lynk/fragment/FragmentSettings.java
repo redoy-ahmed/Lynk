@@ -82,6 +82,8 @@ public class FragmentSettings extends Fragment {
                     public void onClick(SweetAlertDialog sweetAlertDialog) {
                         sweetAlertDialog.cancel();
                         shared.saveIsLogin(false);
+                        shared.setAccessToken("");
+                        initializeData();
                     }
                 })
                 .show();
