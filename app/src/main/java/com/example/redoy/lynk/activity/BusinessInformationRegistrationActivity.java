@@ -138,7 +138,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
 
     private String mBusinessNameString, mBusinessCategoryString, mBusinessLocationString, mBusinessVerifiedPhoneString, mBusinessThanaString, mBusinessDealsString;
     private String mFullNameString, mBusinessDescriptionString, mEmailString, mPasswordString, mConfirmPasswordStrring, mGoogleLocationString;
-    private String mLatString, mLngString;
+    private String mLatString = "", mLngString = "";
     private String token;
 
     String[] thanaArray;
@@ -209,10 +209,15 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
         ButterKnife.bind(this);
         getSupportActionBar().setHomeButtonEnabled(true);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-        getMyLocation();
-        getCategory();
-        getThana();
-        getGoogleLocation();
+
+        if (ConnectionStatus.getInstance(this).isOnline()) {
+            getMyLocation();
+            getCategory();
+            getThana();
+            getGoogleLocation();
+        } else {
+            showToast(getString(R.string.connection_msg1));
+        }
 
         validator = new Validator(this);
         validator.setValidationListener(this);

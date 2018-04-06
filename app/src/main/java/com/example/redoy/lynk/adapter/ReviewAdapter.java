@@ -38,7 +38,7 @@ public class ReviewAdapter extends RecyclerView.Adapter<ReviewAdapter.ReviewAdap
     @Override
     public void onBindViewHolder(ReviewAdapterViewHolder holder, int position) {
         holder.mUserNameTextView.setText(reviewItems.get(position).getName());
-        holder.mTimeStampTextView.setText(reviewItems.get(position).getTimestamp());
+        holder.mTimeStampTextView.setText(reviewItems.get(position).getTimestamp().replace(".000000",""));
         holder.mDescriptionTextView.setText(reviewItems.get(position).getDescription());
         holder.mRatingBar.setRating(Float.parseFloat(reviewItems.get(position).getRatedByUser()));
     }

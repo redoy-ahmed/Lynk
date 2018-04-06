@@ -65,8 +65,8 @@ public class CustomSharedPreference {
     }
 
     public void saveRemember(String email, String password) {
-        sharedPref.edit().putString(Constants.EMAIL, email);
-        sharedPref.edit().putString(Constants.PASSWORD, password);
+        sharedPref.edit().putString(Constants.EMAIL, email).apply();
+        sharedPref.edit().putString(Constants.PASSWORD, password).apply();
     }
 
     public String getRememberEmail() {

@@ -49,7 +49,7 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
     public void onBindViewHolder(RecyclerViewHolderHome holder, int position) {
         holder.itemName.setText(itemList.get(position).getTitle());
         Picasso.get().load(itemList.get(position).getFeature_img()).into(holder.itemPhoto);
-        holder.itemCityName.setText(itemList.get(position).getCity());
+        holder.itemThanaName.setText(itemList.get(position).getThana());
     }
 
     @Override
@@ -65,8 +65,8 @@ public class RecyclerViewAdapterVoiceSearch extends RecyclerView.Adapter<Recycle
         @BindView(R.id.list_item_imageView)
         public ImageView itemPhoto;
 
-        @BindView(R.id.list_item_city_textView)
-        public TextView itemCityName;
+        @BindView(R.id.list_item_thana_textView)
+        public TextView itemThanaName;
 
         @BindView(R.id.relativeLayout)
         public RelativeLayout relativeLayout;

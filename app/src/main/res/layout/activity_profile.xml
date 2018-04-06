@@ -53,6 +53,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="50dp"
                 android:layout_gravity="bottom"
+                app:tabMode="scrollable"
+                app:tabGravity="fill"
                 app:tabIndicatorColor="@android:color/white"
                 app:tabSelectedTextColor="@android:color/white"
                 app:tabTextColor="@color/white" />

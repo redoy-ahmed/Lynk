@@ -46,7 +46,4 @@
         android:textSize="@dimen/_24sdp"
         android:textStyle="bold"
         android:visibility="gone"/>
-
-
-
 </RelativeLayout>

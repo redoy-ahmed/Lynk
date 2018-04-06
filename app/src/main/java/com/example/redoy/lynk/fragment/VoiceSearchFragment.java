@@ -28,6 +28,7 @@ import com.example.redoy.lynk.application.RetrofitLynk;
 import com.example.redoy.lynk.model.Data;
 import com.example.redoy.lynk.model.SearchResponse;
 import com.example.redoy.lynk.model.VoiceSearchItem;
+import com.example.redoy.lynk.util.ConnectionStatus;
 import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
@@ -85,13 +86,18 @@ public class VoiceSearchFragment extends Fragment {
         microPhoneImageView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                showSearchDialog();
+                if (ConnectionStatus.getInstance(rootView.getContext()).isOnline()) {
+                    showSearchDialog();
+                } else {
+                    showToast(getString(R.string.connection_msg1));
+                }
             }
         });
 
         emptyTextView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                emptyTextView.setVisibility(View.GONE);
                 showSearchDialog();
             }
         });
@@ -109,6 +115,10 @@ public class VoiceSearchFragment extends Fragment {
         } catch (ActivityNotFoundException a) {
             Toast.makeText(rootView.getContext(), getString(R.string.speech_not_supported), Toast.LENGTH_SHORT).show();
         }
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(rootView.getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     @Override
@@ -152,7 +162,7 @@ public class VoiceSearchFragment extends Fragment {
 
                                 Data[] data = searchResponse.getData();
                                 for (int i = 0; i < data.length; i++) {
-                                    searchResponses.add(new VoiceSearchItem(data[i].getId(), data[i].getTitle(), data[i].getFeature_img(), data[i].getCity()));
+                                    searchResponses.add(new VoiceSearchItem(data[i].getId(), data[i].getTitle(), data[i].getFeature_img(), data[i].getThana()));
                                 }
                                 initializeData();
                                 handler.removeCallbacksAndMessages(true);
@@ -187,7 +197,7 @@ public class VoiceSearchFragment extends Fragment {
             voiceSearchRecyclerView.setVisibility(View.VISIBLE);
         } else {
             emptyTextView.setVisibility(View.VISIBLE);
-            emptyTextView.setText("No Data Found Retry!");
+            emptyTextView.setText("No Data Found\n Tap Here to Retry!");
         }
     }
 

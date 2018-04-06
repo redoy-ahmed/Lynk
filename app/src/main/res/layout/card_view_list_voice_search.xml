@@ -41,7 +41,7 @@
                 android:textSize="16dp" />
 
             <TextView
-                android:id="@+id/list_item_city_textView"
+                android:id="@+id/list_item_thana_textView"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/list_item_textView"

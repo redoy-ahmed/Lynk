@@ -37,7 +37,7 @@
         android:maxLines="1"
         android:text="2 min ago"
         android:textColor="@color/colorAccent"
-        android:textSize="15dp" />
+        android:textSize="13dp" />
 
     <me.zhanghai.android.materialratingbar.MaterialRatingBar
         android:id="@+id/ratingBar"

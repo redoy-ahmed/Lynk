@@ -9,13 +9,13 @@ public class VoiceSearchItem {
     private String id;
     private String title;
     private String feature_img;
-    private String city;
+    private String thana;
 
-    public VoiceSearchItem(String id, String title, String feature_img, String city) {
+    public VoiceSearchItem(String id, String title, String feature_img, String thana) {
         this.id = id;
         this.title = title;
         this.feature_img = feature_img;
-        this.city = city;
+        this.thana = thana;
     }
 
     public String getId() {
@@ -30,7 +30,7 @@ public class VoiceSearchItem {
         return feature_img;
     }
 
-    public String getCity() {
-        return city;
+    public String getThana() {
+        return thana;
     }
 }

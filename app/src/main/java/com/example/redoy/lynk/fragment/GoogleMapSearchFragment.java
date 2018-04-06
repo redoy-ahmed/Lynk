@@ -27,6 +27,7 @@ import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.service.LocationAlertIntentService;
+import com.example.redoy.lynk.util.ConnectionStatus;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.GoogleApiAvailability;
 import com.google.android.gms.common.GooglePlayServicesNotAvailableException;
@@ -89,6 +90,8 @@ public class GoogleMapSearchFragment extends Fragment implements
     //in milli seconds
     private static final int GEOFENCE_EXPIRATION = 6000;
     private GeofencingClient geofencingClient;
+
+    Button btnMyLocation;
 
     View rootView;
 
@@ -159,32 +162,24 @@ public class GoogleMapSearchFragment extends Fragment implements
             mMap.setMyLocationEnabled(true);
         }
 
-        Button btnMyLocation = rootView.findViewById(R.id.btnMyLocation);
+        btnMyLocation = rootView.findViewById(R.id.btnMyLocation);
+        btnMyLocation.setVisibility(View.GONE);
         btnMyLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
-                mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
-                mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
-            }
-        });
-
-        /*
-        searchResult = new ArrayList<>();
-
-        Button btnVoiceSearch = findViewById(R.id.btnVoiceSearch);
-        btnVoiceSearch.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                if(searchResult.size()!=0) {
-                    Intent intent = new Intent(MapsActivity.this, MainActivity.class);
-                    intent.putStringArrayListExtra("results",searchResult);
-                    startActivity(intent);
-                }else {
-                    Toast.makeText(rootView.getContext(),"Dont have any data to search",Toast.LENGTH_LONG).show();
+                if (ConnectionStatus.getInstance(rootView.getContext()).isOnline()) {
+                    LatLng latLng = new LatLng(mLastLocation.getLatitude(), mLastLocation.getLongitude());
+                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
+                    mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
+                } else {
+                    showToast(getString(R.string.connection_msg1));
                 }
             }
-        });*/
+        });
+    }
+
+    public void showToast(String msg) {
+        Toast.makeText(rootView.getContext(), msg, Toast.LENGTH_SHORT).show();
     }
 
     protected synchronized void buildGoogleApiClient() {
@@ -227,6 +222,7 @@ public class GoogleMapSearchFragment extends Fragment implements
                         mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, 18));
                         mMap.animateCamera(CameraUpdateFactory.zoomTo(18));
                         isFirstTime = false;
+                        btnMyLocation.setVisibility(View.VISIBLE);
                     }
                 }
             }, Looper.myLooper());

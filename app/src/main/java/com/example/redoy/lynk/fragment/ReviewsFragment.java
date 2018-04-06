@@ -18,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.EditText;
 import android.widget.RatingBar;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
@@ -35,6 +36,7 @@ import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.Locale;
 
 import butterknife.BindView;
@@ -49,8 +51,11 @@ import static android.app.Activity.RESULT_OK;
 @SuppressLint("ValidFragment")
 public class ReviewsFragment extends Fragment {
 
-    @BindView(R.id.recycler_view_photos)
-    RecyclerView mPhotosRecyclerView;
+    @BindView(R.id.recycler_view_reviews)
+    RecyclerView mReviewsRecyclerView;
+
+    @BindView(R.id.empty_textView)
+    TextView mEmptyTextView;
 
     @BindView(R.id.add_review_button)
     FloatingActionButton addReviewButton;
@@ -124,11 +129,17 @@ public class ReviewsFragment extends Fragment {
 
     private void initializeData() {
         LinearLayoutManager linearLayoutManager = new LinearLayoutManager(getActivity().getBaseContext());
-        mPhotosRecyclerView.setLayoutManager(linearLayoutManager);
-        mPhotosRecyclerView.setHasFixedSize(true);
+        mReviewsRecyclerView.setLayoutManager(linearLayoutManager);
+        mReviewsRecyclerView.setHasFixedSize(true);
+        Collections.reverse(reviewItems);
         ReviewAdapter adapter = new ReviewAdapter(getContext(), reviewItems);
-        mPhotosRecyclerView.setAdapter(adapter);
+        mReviewsRecyclerView.setAdapter(adapter);
 
+        if (adapter.getItemCount() == 0) {
+            mEmptyTextView.setVisibility(View.VISIBLE);
+        } else {
+            mEmptyTextView.setVisibility(View.GONE);
+        }
         addReviewButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
