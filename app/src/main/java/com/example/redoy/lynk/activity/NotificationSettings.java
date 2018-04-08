@@ -1,8 +1,8 @@
 package com.example.redoy.lynk.activity;
 
 import android.content.Context;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.SwitchCompat;
 import android.widget.CompoundButton;
 import android.widget.Spinner;
@@ -11,6 +11,7 @@ import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.adapter.CustomSpinnerAdapter;
 import com.example.redoy.lynk.application.LynkApplication;
 import com.example.redoy.lynk.service.CustomSharedPreference;
+import com.example.redoy.lynk.util.TinyDB;
 
 import java.util.ArrayList;
 
@@ -27,6 +28,7 @@ public class NotificationSettings extends AppCompatActivity {
 
     private boolean isNotificationOn;
     private CustomSharedPreference shared;
+    TinyDB tinydb;
     Context context;
 
     @Override
@@ -46,6 +48,7 @@ public class NotificationSettings extends AppCompatActivity {
     private void initializeData() {
 
         shared = LynkApplication.getShared(context);
+        tinydb = new TinyDB(context);
 
         ArrayList<String> languages = new ArrayList();
         languages.add("English");
@@ -66,6 +69,8 @@ public class NotificationSettings extends AppCompatActivity {
             isNotificationOn = isChecked;
             if (isChecked) {
                 shared.saveNotification(true);
+                tinydb.putInt("clickCount", 2);
+                tinydb.getInt("clickCount");
             } else {
                 shared.saveNotification(false);
             }
