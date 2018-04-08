@@ -217,7 +217,7 @@ public class ReviewsFragment extends Fragment {
     private void postReview(String resultString) {
 
         CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
-        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(rootView.getContext(), "Loading...");
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(rootView.getContext(), "Loading Reviews...");
         dialog.show();
 
         CustomSharedPreference customSharedPreference = new CustomSharedPreference(rootView.getContext());

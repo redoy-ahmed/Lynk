@@ -10,6 +10,7 @@ import android.widget.ImageView;
 
 import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.activity.PhotosActivity;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 
@@ -18,10 +19,10 @@ import butterknife.ButterKnife;
 
 public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerViewAdapterPhotos.RecyclerViewHolderPhotos> {
 
-    private ArrayList<Integer> itemList;
+    private ArrayList<String> itemList;
     private Context context;
 
-    public RecyclerViewAdapterPhotos(Context context, ArrayList<Integer> itemList) {
+    public RecyclerViewAdapterPhotos(Context context, ArrayList<String> itemList) {
         this.itemList = itemList;
         this.context = context;
     }
@@ -35,7 +36,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
 
     @Override
     public void onBindViewHolder(RecyclerViewAdapterPhotos.RecyclerViewHolderPhotos holder, int position) {
-        holder.itemPhoto.setImageResource(itemList.get(position));
+        Picasso.get().load(itemList.get(position)).into(holder.itemPhoto);
     }
 
     @Override
@@ -48,7 +49,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
         @BindView(R.id.list_item_imageView)
         public ImageView itemPhoto;
 
-        public RecyclerViewHolderPhotos(final View itemView, final ArrayList<Integer> itemList, final Context context) {
+        public RecyclerViewHolderPhotos(final View itemView, final ArrayList<String> itemList, final Context context) {
             super(itemView);
             ButterKnife.bind(this, itemView);
 
@@ -56,7 +57,7 @@ public class RecyclerViewAdapterPhotos extends RecyclerView.Adapter<RecyclerView
                 @Override
                 public void onClick(View v) {
                     Intent intent = new Intent(context, PhotosActivity.class);
-                    intent.putIntegerArrayListExtra("images", itemList);
+                    intent.putStringArrayListExtra("images", itemList);
                     context.startActivity(intent);
                 }
             });

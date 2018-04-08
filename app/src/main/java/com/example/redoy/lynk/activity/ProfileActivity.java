@@ -144,8 +144,8 @@ public class ProfileActivity extends AppCompatActivity {
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getSupportFragmentManager());
         adapter.addFrag(new HighlightsFragment(profileResponses), "Highlights");
-        adapter.addFrag(new DealsFragment(profileResponses), "Deal");
-        adapter.addFrag(new PhotosFragment(profileResponses), "Photo");
+        adapter.addFrag(new DealsFragment(id), "Deal");
+        adapter.addFrag(new PhotosFragment(id), "Photo");
         adapter.addFrag(new ReviewsFragment(id), "Reviews");
         viewPager.setAdapter(adapter);
     }

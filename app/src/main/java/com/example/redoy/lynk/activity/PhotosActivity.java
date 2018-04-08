@@ -22,7 +22,7 @@ public class PhotosActivity extends AppCompatActivity {
 
     private static int currentPage = 0;
     private static int NUM_PAGES = 0;
-    private ArrayList<Integer> ImagesArray = new ArrayList<>();
+    private ArrayList<String> ImagesArray = new ArrayList<>();
 
     @BindView(R.id.pagerPhotos)
     ViewPager mPagerPhotos;
@@ -40,7 +40,7 @@ public class PhotosActivity extends AppCompatActivity {
 
     private void initializeData() {
         Intent intent = getIntent();
-        ImagesArray = (intent.getIntegerArrayListExtra("images"));
+        ImagesArray = (intent.getStringArrayListExtra("images"));
     }
 
     private void initializeWidgets() {
