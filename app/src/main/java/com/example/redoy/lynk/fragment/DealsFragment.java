@@ -73,11 +73,10 @@ public class DealsFragment extends Fragment {
                         @Override
                         public void run() {
                             if (dealsResponse != null) {
+                                dialog.dismiss();
                                 DataForDeals dataForDeals = dealsResponse.getDataForDeals();
                                 mDealsTextView.setText(dataForDeals.getTitle());
                                 Picasso.get().load(dataForDeals.getDeal_img_url()).into(mDealsImageView);
-                                dialog.dismiss();
-
                                 handler.removeCallbacksAndMessages(true);
                             } else {
                                 handler.postDelayed(this, 100);

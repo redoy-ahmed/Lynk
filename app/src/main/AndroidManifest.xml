@@ -53,7 +53,8 @@
 
         <service
             android:name=".service.LocationAlertIntentService"
-            android:allowBackup="true" />
+            android:allowBackup="true"
+            android:exported="true" />
 
         <activity
             android:name=".activity.ProfileActivity"

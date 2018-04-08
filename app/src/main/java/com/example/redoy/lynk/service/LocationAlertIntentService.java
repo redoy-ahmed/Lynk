@@ -1,8 +1,10 @@
 package com.example.redoy.lynk.service;
 
 import android.app.IntentService;
+import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
+import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -23,7 +25,9 @@ import java.util.List;
 import java.util.Locale;
 
 public class LocationAlertIntentService extends IntentService {
+
     private static final String IDENTIFIER = "LocationAlertIS";
+    private String mTitleString;
 
     public LocationAlertIntentService() {
         super(IDENTIFIER);
@@ -31,6 +35,8 @@ public class LocationAlertIntentService extends IntentService {
 
     @Override
     protected void onHandleIntent(Intent intent) {
+
+        mTitleString = intent.getStringExtra("title");
 
         GeofencingEvent geofencingEvent = GeofencingEvent.fromIntent(intent);
 
@@ -43,18 +49,11 @@ public class LocationAlertIntentService extends IntentService {
 
         int geofenceTransition = geofencingEvent.getGeofenceTransition();
 
-        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER ||
-                geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
-
+        if (geofenceTransition == Geofence.GEOFENCE_TRANSITION_ENTER || geofenceTransition == Geofence.GEOFENCE_TRANSITION_DWELL) {
             List<Geofence> triggeringGeofences = geofencingEvent.getTriggeringGeofences();
-
-            String transitionDetails = getGeofenceTransitionInfo(
-                    triggeringGeofences);
-
+            String transitionDetails = getGeofenceTransitionInfo(triggeringGeofences);
             String transitionType = getTransitionString(geofenceTransition);
-
-
-            notifyLocationAlert(transitionType, transitionDetails);
+            notifyLocationAlert(transitionType, transitionDetails, mTitleString);
         }
     }
 
@@ -135,16 +134,18 @@ public class LocationAlertIntentService extends IntentService {
         }
     }
 
-    private void notifyLocationAlert(String locTransitionType, String locationDetails) {
+    private void notifyLocationAlert(String transitionType, String locTransitionType, String mTitleString) {
         RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_layout);
         collapsedView.setTextViewText(R.id.timestamp, DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME));
 
-        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, "fdfd")
-                .setAutoCancel(true)
+        NotificationCompat.Builder builder = new NotificationCompat.Builder(this, mTitleString)
+                .setAutoCancel(false)
                 .setSmallIcon(R.drawable.ic_notifications_black_24dp)
                 .setContentIntent(PendingIntent.getActivity(this, 0, new Intent(this, MainActivity.class), 0))
                 .setCustomContentView(collapsedView)
+                .setDefaults(Notification.DEFAULT_SOUND)
                 .setStyle(new NotificationCompat.DecoratedCustomViewStyle());
+
         NotificationManager notificationManager = (android.app.NotificationManager) getSystemService(NOTIFICATION_SERVICE);
         notificationManager.notify(0, builder.build());
     }

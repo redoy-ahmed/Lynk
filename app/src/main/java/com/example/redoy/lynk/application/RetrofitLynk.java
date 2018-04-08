@@ -1,6 +1,7 @@
 package com.example.redoy.lynk.application;
 
 
+import com.example.redoy.lynk.model.AllDealsResponse;
 import com.example.redoy.lynk.model.BusinessRegistration;
 import com.example.redoy.lynk.model.BusinessRegistrationResponse;
 import com.example.redoy.lynk.model.CategoryResponse;
@@ -62,4 +63,7 @@ public interface RetrofitLynk {
 
     @GET("cats?")
     Call<CategoryResponse> getCategoryResponse();
+
+    @GET("directory/deal/search/?q=")
+    Call<AllDealsResponse> getAllNotifications();
 }

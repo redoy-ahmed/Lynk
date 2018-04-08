@@ -66,7 +66,6 @@ public class LogInActivity extends AppCompatActivity implements ValidationListen
     private CustomSharedPreference shared;
     private static final String TAG = LogInActivity.class.getSimpleName();
 
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
