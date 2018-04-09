@@ -83,13 +83,7 @@ public class GoogleMapSearchFragment extends Fragment implements
     boolean isFirstTime = true;
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     FusedLocationProviderClient mFusedLocationClient;
-    protected static long MIN_UPDATE_INTERVAL = 30 * 1000;
-
-    //meters
-    private static final int GEOFENCE_RADIUS = 500;
-    //in milli seconds
-    private static final int GEOFENCE_EXPIRATION = 6000;
-    private GeofencingClient geofencingClient;
+    protected static long MIN_UPDATE_INTERVAL = 30 * 100;
 
     Button btnMyLocation;
 
@@ -122,7 +116,6 @@ public class GoogleMapSearchFragment extends Fragment implements
         mapView.onCreate(savedInstanceState);
         mapView.onResume();
         mapView.getMapAsync(this);
-        geofencingClient = LocationServices.getGeofencingClient(getContext());
     }
 
     private boolean isGooglePlayServicesAvailable() {
@@ -144,13 +137,6 @@ public class GoogleMapSearchFragment extends Fragment implements
         mMap.setMapType(GoogleMap.MAP_TYPE_HYBRID);
         mMap.getUiSettings().setMyLocationButtonEnabled(true);
         mMap.getUiSettings().setZoomControlsEnabled(true);
-
-        mMap.setOnMapClickListener(new GoogleMap.OnMapClickListener() {
-            @Override
-            public void onMapClick(LatLng latLng) {
-                addLocationAlert(latLng.latitude, latLng.longitude);
-            }
-        });
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             if (ContextCompat.checkSelfPermission(rootView.getContext(), Manifest.permission.ACCESS_FINE_LOCATION) == PackageManager.PERMISSION_GRANTED) {
@@ -360,47 +346,5 @@ public class GoogleMapSearchFragment extends Fragment implements
         } catch (IOException e) {
         }
         return addressText;
-    }
-
-    @SuppressLint("MissingPermission")
-    private void addLocationAlert(double lat, double lng) {
-
-        String key = "" + lat + "-" + lng;
-        Geofence geofence = getGeofence(lat, lng, key);
-        geofencingClient.addGeofences(getGeofencingRequest(geofence), getGeofencePendingIntent()).addOnCompleteListener(new OnCompleteListener<Void>() {
-            @Override
-            public void onComplete(@NonNull Task<Void> task) {
-                if (task.isSuccessful()) {
-                    Toast.makeText(getContext(), "Location alter has been added", Toast.LENGTH_SHORT).show();
-                } else {
-                    Toast.makeText(getContext(), "Location alter could not be added", Toast.LENGTH_SHORT).show();
-                }
-            }
-        });
-    }
-
-    private Geofence getGeofence(double lat, double lang, String key) {
-        return new Geofence.Builder()
-                .setRequestId(key)
-                .setCircularRegion(lat, lang, GEOFENCE_RADIUS)
-                .setExpirationDuration(Geofence.NEVER_EXPIRE)
-                .setTransitionTypes(Geofence.GEOFENCE_TRANSITION_ENTER |
-                        Geofence.GEOFENCE_TRANSITION_DWELL)
-                .setLoiteringDelay(10000)
-                .build();
-    }
-
-    private GeofencingRequest getGeofencingRequest(Geofence geofence) {
-        GeofencingRequest.Builder builder = new GeofencingRequest.Builder();
-
-        builder.setInitialTrigger(GeofencingRequest.INITIAL_TRIGGER_DWELL);
-        builder.addGeofence(geofence);
-        return builder.build();
-    }
-
-    private PendingIntent getGeofencePendingIntent() {
-        Intent intent = new Intent(getContext(), LocationAlertIntentService.class);
-        return PendingIntent.getService(getContext(), 0, intent,
-                PendingIntent.FLAG_UPDATE_CURRENT);
     }
 }

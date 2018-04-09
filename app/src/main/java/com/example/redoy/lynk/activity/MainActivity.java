@@ -74,7 +74,7 @@ public class MainActivity extends AppCompatActivity implements
 
     //meters
     private static final int GEOFENCE_RADIUS = 500;
-    protected static long MIN_UPDATE_INTERVAL = 30 * 1000;
+    protected static long MIN_UPDATE_INTERVAL = 30 * 100;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
