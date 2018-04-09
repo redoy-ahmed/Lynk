@@ -17,8 +17,7 @@
             android:paddingBottom="1dp"
             android:paddingLeft="4dp"
             android:paddingRight="6dp"
-            android:tint="@color/colorAccent"
-            app:srcCompat="@drawable/ic_notifications_black_24dp" />
+            app:srcCompat="@drawable/app_icon" />
 
         <ImageView
             android:id="@+id/small_icon"
@@ -46,13 +45,13 @@
             android:id="@+id/content_title"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Discount" />
+            android:text="" />
 
         <TextView
             android:id="@+id/content_text"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:text="Get 5% Discount at Nearby Bata!" />
+            android:text="" />
     </LinearLayout>
 
     <TextView

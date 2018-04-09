@@ -137,6 +137,8 @@ public class LocationAlertIntentService extends IntentService {
     private void notifyLocationAlert(String transitionType, String locTransitionType, String mTitleString) {
         RemoteViews collapsedView = new RemoteViews(getPackageName(), R.layout.notification_layout);
         collapsedView.setTextViewText(R.id.timestamp, DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME));
+        collapsedView.setTextViewText(R.id.content_title, mTitleString);
+        collapsedView.setTextViewText(R.id.content_text, locTransitionType);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, mTitleString)
                 .setAutoCancel(false)

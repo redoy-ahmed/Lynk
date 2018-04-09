@@ -33,7 +33,7 @@ public class CustomSharedPreference {
     }
 
     public boolean getSavedNotification() {
-        return sharedPref.getBoolean(Constants.NOTIFICATION, false);
+        return sharedPref.getBoolean(Constants.NOTIFICATION, true);
     }
 
     public void setCheckQuiz(String quiz) {

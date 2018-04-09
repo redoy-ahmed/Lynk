@@ -2,7 +2,6 @@ package com.example.redoy.lynk.activity;
 
 import android.Manifest;
 import android.annotation.SuppressLint;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.location.Location;
@@ -13,17 +12,13 @@ import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
-import android.text.Html;
 import android.util.Log;
 import android.view.MenuItem;
 import android.view.View;
-import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.AutoCompleteTextView;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.Filter;
-import android.widget.Filterable;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -42,37 +37,19 @@ import com.example.redoy.lynk.util.ConnectionStatus;
 import com.example.redoy.lynk.util.CustomSweetAlertDialog;
 import com.google.android.gms.common.ConnectionResult;
 import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.common.api.PendingResult;
-import com.google.android.gms.common.api.ResultCallback;
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.places.Place;
-import com.google.android.gms.location.places.PlaceBuffer;
 import com.google.android.gms.location.places.Places;
-import com.google.android.gms.maps.CameraUpdateFactory;
-import com.google.android.gms.maps.model.BitmapDescriptorFactory;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
-import com.google.android.gms.maps.model.MarkerOptions;
 import com.mobsandgeeks.saripaar.ValidationError;
 import com.mobsandgeeks.saripaar.Validator;
 import com.mobsandgeeks.saripaar.annotation.NotEmpty;
 import com.ontbee.legacyforks.cn.pedant.SweetAlert.SweetAlertDialog;
 
-import org.json.JSONArray;
-import org.json.JSONException;
-import org.json.JSONObject;
-
-import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
-import java.net.MalformedURLException;
-import java.net.URL;
-import java.net.URLEncoder;
-import java.util.ArrayList;
 import java.util.List;
 
 import butterknife.BindView;
@@ -280,7 +257,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
 
     private void submitData() {
         CustomSweetAlertDialog customSweetAlertDialog = new CustomSweetAlertDialog();
-        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(getApplicationContext(), "Posting...");
+        final SweetAlertDialog dialog = customSweetAlertDialog.getProgressDialog(this, "Registering...");
         dialog.show();
 
         CustomSharedPreference customSharedPreference = new CustomSharedPreference(getApplicationContext());
@@ -309,22 +286,27 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
             call.enqueue(new Callback<BusinessRegistrationResponse>() {
                 @Override
                 public void onResponse(final Response<BusinessRegistrationResponse> response, Retrofit retrofit) {
-                    final BusinessRegistrationResponse businessRegistrationResponse = response.body();
-                    if (businessRegistrationResponse.getSuccess() == true) {
-                        final Handler handler = new Handler();
-                        Runnable runnable = new Runnable() {
-                            @Override
-                            public void run() {
-                                dialog.dismiss();
-                                Toast.makeText(getApplicationContext(), businessRegistrationResponse.getMessage(), Toast.LENGTH_LONG).show();
-                                handler.removeCallbacksAndMessages(true);
-                                startActivity(new Intent(getApplicationContext(), MainActivity.class));
-                            }
-                        };
-                        handler.postDelayed(runnable, 100);
+                    if (response.body() != null) {
+                        final BusinessRegistrationResponse businessRegistrationResponse = response.body();
+                        if (businessRegistrationResponse.getSuccess() == true) {
+                            final Handler handler = new Handler();
+                            Runnable runnable = new Runnable() {
+                                @Override
+                                public void run() {
+                                    dialog.dismiss();
+                                    Toast.makeText(getApplicationContext(), businessRegistrationResponse.getMessage(), Toast.LENGTH_LONG).show();
+                                    handler.removeCallbacksAndMessages(true);
+                                    startActivity(new Intent(getApplicationContext(), MainActivity.class));
+                                }
+                            };
+                            handler.postDelayed(runnable, 100);
+                        } else {
+                            dialog.dismiss();
+                            Toast.makeText(getApplicationContext(), "Review not Posted", Toast.LENGTH_LONG).show();
+                        }
                     } else {
                         dialog.dismiss();
-                        Toast.makeText(getApplicationContext(), "Review not Posted", Toast.LENGTH_LONG).show();
+                        Toast.makeText(getApplicationContext(), "Email or Password Already in Use", Toast.LENGTH_LONG).show();
                     }
                 }
 
@@ -335,7 +317,7 @@ public class BusinessInformationRegistrationActivity extends AppCompatActivity i
             });
         } else {
             dialog.dismiss();
-            new SweetAlertDialog(getApplicationContext(), SweetAlertDialog.WARNING_TYPE)
+            new SweetAlertDialog(this, SweetAlertDialog.WARNING_TYPE)
                     .setTitleText("Unauthorized")
                     .setContentText("You Are not Logged In Please Log In to Register a Business")
                     .setConfirmText("OK")

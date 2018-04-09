@@ -55,8 +55,8 @@ public interface RetrofitLynk {
     @POST("auth/directory/review/post/by/dirid/{id}?")
     Call<SubmitReviewResponse> submitReview(@Path("id") String id, @Query("token") String token, @Body ReviewBody reviewBody);
 
-    @POST("/auth/add/new/business/post?token={token}")
-    Call<BusinessRegistrationResponse> submitBusinessRegistration(@Path("token") String token, @Body BusinessRegistration businessRegistration);
+    @POST("auth/add/new/business/post?")
+    Call<BusinessRegistrationResponse> submitBusinessRegistration(@Query("token") String token, @Body BusinessRegistration businessRegistration);
 
     @GET("thana/ajax?")
     Call<ThanaResponse> getThanaResponse();
