@@ -11,7 +11,6 @@ import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.adapter.CustomSpinnerAdapter;
 import com.example.redoy.lynk.application.LynkApplication;
 import com.example.redoy.lynk.service.CustomSharedPreference;
-import com.example.redoy.lynk.util.TinyDB;
 
 import java.util.ArrayList;
 
@@ -26,9 +25,7 @@ public class NotificationSettings extends AppCompatActivity {
     @BindView(R.id.notification_switch)
     public SwitchCompat notificationSwitch;
 
-    private boolean isNotificationOn;
     private CustomSharedPreference shared;
-    TinyDB tinydb;
     Context context;
 
     @Override
@@ -46,9 +43,7 @@ public class NotificationSettings extends AppCompatActivity {
     }
 
     private void initializeData() {
-
         shared = LynkApplication.getShared(context);
-        tinydb = new TinyDB(context);
 
         ArrayList<String> languages = new ArrayList();
         languages.add("English");
@@ -66,11 +61,8 @@ public class NotificationSettings extends AppCompatActivity {
         }
 
         public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-            isNotificationOn = isChecked;
             if (isChecked) {
                 shared.saveNotification(true);
-                tinydb.putInt("clickCount", 2);
-                tinydb.getInt("clickCount");
             } else {
                 shared.saveNotification(false);
             }

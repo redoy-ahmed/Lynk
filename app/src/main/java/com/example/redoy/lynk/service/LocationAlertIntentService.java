@@ -4,7 +4,6 @@ import android.app.IntentService;
 import android.app.Notification;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
-import android.content.Context;
 import android.content.Intent;
 import android.location.Address;
 import android.location.Geocoder;
@@ -139,6 +138,7 @@ public class LocationAlertIntentService extends IntentService {
         collapsedView.setTextViewText(R.id.timestamp, DateUtils.formatDateTime(this, System.currentTimeMillis(), DateUtils.FORMAT_SHOW_TIME));
         collapsedView.setTextViewText(R.id.content_title, mTitleString);
         collapsedView.setTextViewText(R.id.content_text, locTransitionType);
+        collapsedView.setImageViewResource(R.id.big_icon, R.drawable.app_icon);
 
         NotificationCompat.Builder builder = new NotificationCompat.Builder(this, mTitleString)
                 .setAutoCancel(false)
