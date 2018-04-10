@@ -131,6 +131,10 @@ public class MainActivity extends AppCompatActivity implements
 
         if (android.os.Build.VERSION.SDK_INT >= Build.VERSION_CODES.M) {
             checkLocationPermission();
+        } else {
+            if (mGoogleApiClient == null) {
+                buildGoogleApiClient();
+            }
         }
     }
 
@@ -299,7 +303,7 @@ public class MainActivity extends AppCompatActivity implements
             }
             return false;
         } else {
-            getNotifications();
+            buildGoogleApiClient();
             return true;
         }
     }
