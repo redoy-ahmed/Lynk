@@ -1,11 +1,13 @@
 package com.example.redoy.lynk.fragment;
 
 import android.content.ActivityNotFoundException;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
 import android.speech.RecognizerIntent;
 import android.support.v4.app.Fragment;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.RecyclerView;
 import android.util.Log;
 import android.view.LayoutInflater;
@@ -14,13 +16,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.example.redoy.lynk.R;
 import com.example.redoy.lynk.activity.BusinessInformationRegistrationActivity;
-import com.example.redoy.lynk.activity.LogInActivity;
 import com.example.redoy.lynk.adapter.AutoFitGridLayoutManager;
 import com.example.redoy.lynk.adapter.RecyclerViewAdapterVoiceSearch;
 import com.example.redoy.lynk.application.ApiClient;
@@ -61,6 +63,9 @@ public class VoiceSearchFragment extends Fragment {
     @BindView(R.id.empty_textView)
     public TextView emptyTextView;
 
+    @BindView(R.id.quick_search_textView)
+    public TextView quickSearchTextView;
+
     @BindView(R.id.recycler_view_voice_search)
     public RecyclerView voiceSearchRecyclerView;
 
@@ -98,7 +103,17 @@ public class VoiceSearchFragment extends Fragment {
             @Override
             public void onClick(View view) {
                 emptyTextView.setVisibility(View.GONE);
+                quickSearchTextView.setVisibility(View.GONE);
                 showSearchDialog();
+            }
+        });
+
+        quickSearchTextView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                emptyTextView.setVisibility(View.GONE);
+                quickSearchTextView.setVisibility(View.GONE);
+                showQuickSearchDialog();
             }
         });
     }
@@ -198,7 +213,35 @@ public class VoiceSearchFragment extends Fragment {
         } else {
             emptyTextView.setVisibility(View.VISIBLE);
             emptyTextView.setText("No Data Found\n Tap Here to Retry!");
+            quickSearchTextView.setVisibility(View.VISIBLE);
         }
+    }
+
+    private void showQuickSearchDialog() {
+        LayoutInflater li = LayoutInflater.from(rootView.getContext());
+        View promptsView = li.inflate(R.layout.quick_search_dialog, null);
+        AlertDialog.Builder alertDialogBuilder = new AlertDialog.Builder(rootView.getContext());
+        alertDialogBuilder.setView(promptsView);
+        final EditText userInput = promptsView.findViewById(R.id.editTextDialogQuickSearch);
+
+        alertDialogBuilder
+                .setCancelable(false)
+                .setPositiveButton("Search",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                getSearchResult(userInput.getText().toString());
+                                dialog.dismiss();
+                            }
+                        })
+                .setNegativeButton("Cancel",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int id) {
+                                dialog.dismiss();
+                            }
+                        });
+
+        AlertDialog alertDialog = alertDialogBuilder.create();
+        alertDialog.show();
     }
 
     @Override
